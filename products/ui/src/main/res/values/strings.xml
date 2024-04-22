@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="salary_card">Карта зарплатная</string>
+  <string name="additional_card">Дополнительная карта</string>
+  <string name="physical_card">Физическая</string>
+  <string name="blocked_card">Заблокирована</string>
+  <string name="virtual_card">Виртуальная</string>
+  <string name="rate_is">Ставка</string>
+  <string name="rate_until">До</string>
+  <string name="home">Главная</string>
+  <string name="accounts">Счета</string>
+  <string name="сontribution">Вклады</string>
+  <string name="open_new_account_or_product">Открыть новый счет или продукт</string>
+  <string name="account">Счет расчетный</string>
+  <string name="attention">Внимание</string>
+  <string name="repeat">Повторить</string>
+  <string name="reload">Обновить</string>
+  <string name="something_went_wrong">Упс, что-то пошло не так</string>
+  <string name="failed_to_load">Не удалось загрузить \n часть контента </string>
+  <string name="server_temporarily_unavailable">Сервер временно недоступен. \n Пожалуйста, повторите попытку \n позднее</string>
+</resources>
