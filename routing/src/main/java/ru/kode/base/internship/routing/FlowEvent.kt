@@ -5,5 +5,5 @@ sealed class FlowEvent {
   data object LoginRequested : FlowEvent()
   data object EnterPasswordDismissed : FlowEvent()
   data object UserLoggedIn : FlowEvent()
-  data object ProductHomeOut: FlowEvent()
+  data object ProductHomeDismissed : FlowEvent()
 }
