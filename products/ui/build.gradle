@@ -11,7 +11,5 @@ android {
 dependencies {
   api project(":core:ui:uikit")
 
-  api project(":auth:domain")
-
   api project(':routing')
 }
