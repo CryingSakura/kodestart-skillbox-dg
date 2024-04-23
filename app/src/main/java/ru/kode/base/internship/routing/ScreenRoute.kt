@@ -4,5 +4,5 @@ sealed class ScreenRoute(val path: String) {
   data object EnterPassword : ScreenRoute(path = "enter-password")
   data object UserIdentification : ScreenRoute(path = "user-identification")
   data object FeatureInProgress : ScreenRoute(path = "feature-in-progress")
-  data object ProductHome: ScreenRoute(path = "product-home")
+  data object ProductHome : ScreenRoute(path = "product-home")
 }
