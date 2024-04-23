@@ -5,8 +5,10 @@ import ru.kode.base.core.BaseViewIntents
 class ProductsHomeIntents : BaseViewIntents() {
   val navigateOnBack = intent(name = "navigateOnBack")
   val openNewAccountOrProduct = intent(name = "openNewAccountOrProduct")
-  val checkCardDetails = intent(name = "checkCardDetails")
-  val checkAccountDetails = intent(name = "checkAccountDetails")
-  val checkDepositDetails = intent(name = "checkContributionDetails")
+  val cardDetailsRequested = intent(name = "cardDetailsRequested")
+  val accountDetailsRequested = intent(name = "accountDetailsRequested")
+  val depositDetailsRequested = intent(name = "depositDetailsRequested")
   val refreshData = intent(name = "refreshData")
+  val refreshDepositData = intent(name = "refreshDepositData")
+  val refreshAccountData = intent(name = "refreshAccountData")
 }
