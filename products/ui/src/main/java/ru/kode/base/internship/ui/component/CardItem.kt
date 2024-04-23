@@ -6,9 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,24 +16,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.cardicon.CardIcon
+import ru.kode.base.internship.ui.cardicon.PaymentSystem
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
+import ru.kode.base.internship.ui.home.CardStatus
+import ru.kode.base.internship.ui.home.CardType
 
 @Composable
 fun CardItem(
   modifier: Modifier = Modifier,
   onCardClick: () -> Unit,
   cardName: String,
-  cardStatus: String,
-  cardType: String,
-  cardPaymentSystem: String,
+  cardStatus: CardStatus,
+  cardType: CardType,
+  cardPaymentSystem: PaymentSystem,
   cardNumber: String,
 ) {
   Row(
     modifier = modifier
-      .heightIn(min = 72.dp)
+      .height(72.dp)
       .fillMaxWidth()
       .clickable(onClick = onCardClick),
     verticalAlignment = Alignment.CenterVertically,
@@ -51,21 +52,25 @@ fun CardItem(
       horizontalAlignment = Alignment.Start,
       verticalArrangement = Arrangement.SpaceEvenly
     ) {
-      Text(text = cardName, fontSize = 15.sp)
+      Text(text = cardName, style = AppTheme.typography.body2)
       Text(
-        text = if (cardStatus == "Blocked") cardStatus
-        else cardType,
-        fontSize = 13.sp,
-        color = if (cardStatus == "Blocked") AppTheme.colors.indicatorContendError
-        else AppTheme.colors.textSecondary
+        text = when (cardStatus) {
+          CardStatus.Blocked -> cardStatus.toString()
+          CardStatus.Active -> cardType.toString()
+        },
+        color = when (cardStatus) {
+          CardStatus.Blocked -> AppTheme.colors.indicatorContendError
+          CardStatus.Active -> AppTheme.colors.textSecondary
+        },
+        style = AppTheme.typography.caption1
       )
-
     }
     Spacer(modifier = Modifier.weight(1f))
 
-    CardIcon(lastFourDigits = cardNumber.takeLast(4), paymentSystem = cardPaymentSystem)
-
-    Spacer(modifier = Modifier.width(16.dp))
+    CardIcon(
+      modifier = Modifier.padding(end = 16.dp),
+      lastFourDigits = cardNumber.takeLast(4),
+      paymentSystem = cardPaymentSystem
+    )
   }
 }
-
