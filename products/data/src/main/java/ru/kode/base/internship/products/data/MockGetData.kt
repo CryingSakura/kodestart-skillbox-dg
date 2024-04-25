@@ -1,6 +1,5 @@
 package ru.kode.base.internship.products.data
 
-import dagger.Provides
 import ru.kode.base.core.di.AppScope
 import ru.kode.base.core.di.SingleIn
 import ru.kode.base.core.util.randomUuid
@@ -13,7 +12,6 @@ import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.domain.entity.AccountDataEntity
 import ru.kode.base.internship.products.domain.entity.CardDataEntity
 import ru.kode.base.internship.products.domain.entity.DepositDataEntity
-import javax.inject.Inject
 
 val accountId1: String = randomUuid()
 val accountId2: String = randomUuid()
@@ -24,8 +22,7 @@ val cardId1: String = randomUuid()
 val cardId2: String = randomUuid()
 val cardId3: String = randomUuid()
 
-@SingleIn(AppScope::class)
-interface MockGetData {
+object MockGetData {
 
   fun getDeposits(): List<DepositDataEntity> {
     return listOf(
@@ -109,6 +106,40 @@ interface MockGetData {
         currency = Currency.valueOf("USD"),
         accountId = AccountDataEntity.Id(accountId2)
       ),
+    )
+  }
+  fun getCard(): List<CardDataEntity> {
+    return listOf(
+      CardDataEntity(
+        accountId = accountId1,
+        number = "1111222233334444",
+        expiredAt = "2022-04-21T00:00:00Z",
+        status = CardStatus.valueOf("Active"),
+        name = "test1",
+        cardType = CardType.valueOf("physical"),
+        paymentSystem = PaymentSystem.valueOf("Visa"),
+        cardId = CardDataEntity.Id(cardId1)
+      ),
+      CardDataEntity(
+        accountId = accountId1,
+        number = "5555666677778888",
+        expiredAt = "2022-04-21T00:00:00Z",
+        status = CardStatus.valueOf("Blocked"),
+        name = "test2",
+        cardType = CardType.valueOf("virtual"),
+        paymentSystem = PaymentSystem.valueOf("Mastercard"),
+        cardId = CardDataEntity.Id(cardId2)
+      ),
+      CardDataEntity(
+        accountId = accountId2,
+        number = "5555666677778888",
+        expiredAt = "2022-04-21T00:00:00Z",
+        status = CardStatus.valueOf("Active"),
+        name = "test3",
+        cardType = CardType.valueOf("virtual"),
+        paymentSystem = PaymentSystem.valueOf("Mastercard"),
+        cardId = CardDataEntity.Id(cardId3)
+      )
     )
   }
 }

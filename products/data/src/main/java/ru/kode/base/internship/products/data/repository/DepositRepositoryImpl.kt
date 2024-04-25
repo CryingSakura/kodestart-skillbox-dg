@@ -10,15 +10,13 @@ import ru.kode.base.internship.products.domain.repository.DepositRepository
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
-class DepositRepositoryImpl @Inject constructor(
-  private val getData: MockGetData,
-) : DepositRepository {
+class DepositRepositoryImpl @Inject constructor(): DepositRepository {
   override val depositsFlow: Flow<List<DepositDataEntity>>
-    get() = flow { getData.getDeposits() }
+    get() = flow { MockGetData.getDeposits()  }
 
   override fun term(id: DepositDataEntity.Id): Flow<DepositDataEntity> {
     return flow {
-      getData.getDeposits().find { it.depositId == id }
+      MockGetData.getDeposits().find { it.depositId == id }
     }
   }
 

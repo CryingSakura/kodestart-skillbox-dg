@@ -10,11 +10,9 @@ import ru.kode.base.internship.products.domain.repository.AccountsRepository
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
-class AccountsRepositoryImpl @Inject constructor(
-  private val getData: MockGetData,
-) : AccountsRepository {
+class AccountsRepositoryImpl @Inject constructor(): AccountsRepository {
   override val accountsFlow: Flow<List<AccountDataEntity>>
-    get() = flow { getData.getAccounts() }
+    get() = flow { MockGetData.getAccounts()  }
 
 
 }
