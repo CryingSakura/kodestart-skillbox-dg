@@ -3,7 +3,7 @@ package ru.kode.base.internship.ui.error
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -23,13 +23,12 @@ fun SomethingWrongComponent(
 ) {
   Column(
     modifier = Modifier
-      .fillMaxWidth()
-      .height(173.dp),
+      .fillMaxWidth(),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
-  )
-  {
+  ) {
     Text(
+      modifier = Modifier.padding(top = 12.dp),
       text = stringResource(id = R.string.something_went_wrong),
       textAlign = TextAlign.Center,
       color = AppTheme.colors.textPrimary

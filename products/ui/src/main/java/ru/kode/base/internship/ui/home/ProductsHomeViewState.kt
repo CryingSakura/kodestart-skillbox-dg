@@ -5,10 +5,8 @@ import ru.kode.base.internship.core.domain.entity.LceState
 
 @Immutable
 data class ProductsHomeViewState(
-  val loadingLceState: LceState = LceState.None,
-  val refreshing: Boolean = false,
-  val loadingAccountsLceStates: LceState = LceState.Loading,
-  val loadingDepositsLceStates: LceState = LceState.Loading,
+  val loadingAccountsLceStates: LceState = LceState.None,
+  val loadingDepositsLceStates: LceState = LceState.None,
   val deposits: List<Deposit> = emptyList(),
   val accounts: List<Account> = emptyList(),
 )

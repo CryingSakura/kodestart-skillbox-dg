@@ -11,34 +11,48 @@ import javax.inject.Inject
 class ProductsHomeViewModel @Inject constructor(
   private val flowEvents: MutableSharedFlow<FlowEvent>,
 ) : BaseViewModel<ProductsHomeViewState, ProductsHomeIntents>() {
-
   override fun buildMachine(): Machine<ProductsHomeViewState> = machine {
     initial = ProductsHomeViewState() to {
       viewModelScope.launch {
-        fetchMoreData()
+        fetchDepositsData()
+      }
+      viewModelScope.launch {
+        fetchAccountsData()
+      }
+    }
+
+    onEach(intent(ProductsHomeIntents::refreshAccountData)) {
+      action { _, _, _ ->
+        viewModelScope.launch {
+          fetchAccountsData()
+        }
+      }
+    }
+    onEach(intent(ProductsHomeIntents::refreshDepositData)) {
+      action { _, _, _ ->
+        viewModelScope.launch {
+          fetchDepositsData()
+        }
       }
     }
 
     onEach(intent(ProductsHomeIntents::navigateOnBack)) {
       action { _, _, _ ->
-        flowEvents.tryEmit(FlowEvent.ProductHomeOut)
+        flowEvents.tryEmit(FlowEvent.ProductHomeDismissed)
       }
     }
 
     onEach(intent(ProductsHomeIntents::refreshData)) {
       action { _, _, _ ->
         viewModelScope.launch {
-          fetchMoreData()
+          fetchAccountsData()
+        }
+        viewModelScope.launch {
+          fetchDepositsData()
         }
       }
     }
 
-
-    onEach(dataState) {
-      transitionTo { state, dataState ->
-        state.copy(loadingLceState = dataState)
-      }
-    }
     onEach(dataAccountsState) {
       transitionTo { state, dataAccountsState ->
         state.copy(loadingAccountsLceStates = dataAccountsState)
@@ -61,25 +75,9 @@ class ProductsHomeViewModel @Inject constructor(
       }
     }
 
-    onEach(intent(ProductsHomeIntents::checkAccountDetails)) {
-      /*action { _, _, _ ->
-        flowEvents.tryEmit(FlowEvent.AccountDetails)
-      }*/
-    }
-    onEach(intent(ProductsHomeIntents::checkDepositDetails)) {
-      /*action { _, _, _ ->
-        flowEvents.tryEmit(FlowEvent.DepositDetails)
-      }*/
-    }
-    onEach(intent(ProductsHomeIntents::checkCardDetails)) {
-      /*action { _, _, _ ->
-        flowEvents.tryEmit(FlowEvent.CardDetails)
-      }*/
-    }
-    onEach(intent(ProductsHomeIntents::openNewAccountOrProduct)) {
-      /*action { _, _, _ ->
-        flowEvents.tryEmit(FlowEvent.NewAccountOrProduct)
-      }*/
-    }
+    onEach(intent(ProductsHomeIntents::accountDetailsRequested)) {}
+    onEach(intent(ProductsHomeIntents::depositDetailsRequested)) {}
+    onEach(intent(ProductsHomeIntents::cardDetailsRequested)) {}
+    onEach(intent(ProductsHomeIntents::openNewAccountOrProduct)) {}
   }
 }

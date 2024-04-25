@@ -26,7 +26,7 @@ object AppFlow : GraphFlow() {
     viewModelStore: ViewModelStore,
   ) : BaseFlowCoordinator<FlowEvent, Unit>(providers, flowEvents, viewModelStore) {
     override suspend fun onFlowStart() {
-      navController.navigate(ScreenRoute.ProductHome.route)
+      navController.navigate(ScreenRoute.UserIdentification.route)
     }
 
     override suspend fun handleEvent(event: FlowEvent) {
@@ -36,7 +36,7 @@ object AppFlow : GraphFlow() {
         FlowEvent.LoginRequested -> navController.navigate(ScreenRoute.EnterPassword.route)
         // TODO add navigation to next screen
         FlowEvent.UserLoggedIn -> navController.navigate(ScreenRoute.ProductHome.route)
-        FlowEvent.ProductHomeOut -> navController.popBackStack()
+        FlowEvent.ProductHomeDismissed -> navController.popBackStack()
       }
     }
   }
@@ -53,7 +53,7 @@ object AppFlow : GraphFlow() {
     animatedComposable(ScreenRoute.FeatureInProgress.route, ScreenTransitionAnimation.Horizontal) {
       FeatureInProgressScreen()
     }
-    animatedComposable(ScreenRoute.ProductHome.route, ScreenTransitionAnimation.Horizontal){
+    animatedComposable(ScreenRoute.ProductHome.route, ScreenTransitionAnimation.Horizontal) {
       ProductsHomeScreen()
     }
   }
