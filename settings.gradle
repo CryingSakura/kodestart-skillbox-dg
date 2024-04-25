@@ -15,5 +15,8 @@ include ':app',
   ':routing',
   ':auth:ui',
   ':auth:data',
-  ':auth:domain'
-include ':products:ui'
+  ':auth:domain',
+  ':products:ui',
+  ':products:domain',
+  ':products:data'
+
