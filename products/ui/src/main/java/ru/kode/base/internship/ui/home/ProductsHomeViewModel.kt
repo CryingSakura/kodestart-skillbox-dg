@@ -14,8 +14,9 @@ class ProductsHomeViewModel @Inject constructor(
 ) : BaseViewModel<ProductsHomeViewState, ProductsHomeIntents>() {
   override fun buildMachine(): Machine<ProductsHomeViewState> = machine {
     initial = ProductsHomeViewState() to {
-      useCase.fetchAccounts()
-      useCase.fetchDeposits()
+      executeAsync {
+        useCase.loadAll()
+      }
     }
 
     onEach(intent(ProductsHomeIntents::refreshAccounts)) {
@@ -37,8 +38,9 @@ class ProductsHomeViewModel @Inject constructor(
 
     onEach(intent(ProductsHomeIntents::refreshData)) {
       action { _, _, _ ->
-        useCase.fetchAccounts()
-        useCase.fetchDeposits()
+        executeAsync {
+          useCase.refresh()
+        }
       }
     }
 
