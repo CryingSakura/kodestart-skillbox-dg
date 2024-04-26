@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
 
@@ -71,11 +72,6 @@ fun CardIcon(
       )
     }
   }
-}
-
-enum class PaymentSystem() {
-  Mastercard,
-  Visa,
 }
 
 @Composable
