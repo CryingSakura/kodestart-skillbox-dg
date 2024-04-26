@@ -6,8 +6,8 @@ enum class PaymentSystem {
 }
 
 enum class CardType {
-  physical,
-  virtual
+  Physical,
+  Virtual
 }
 enum class CardStatus {
   Active,
