@@ -11,6 +11,7 @@ import ru.kode.base.core.routing.utils.animatedComposable
 import ru.kode.base.core.viewmodel.ViewModelProviders
 import ru.kode.base.core.viewmodel.ViewModelStore
 import ru.kode.base.internship.routing.di.AppFlowScope
+import ru.kode.base.internship.ui.carddetails.CardDetailsScreen
 import ru.kode.base.internship.ui.featureinprogress.FeatureInProgressScreen
 import ru.kode.base.internship.ui.home.ProductsHomeScreen
 import ru.kode.base.internship.ui.identification.UserIdentificationScreen
@@ -37,6 +38,9 @@ object AppFlow : GraphFlow() {
         // TODO add navigation to next screen
         FlowEvent.UserLoggedIn -> navController.navigate(ScreenRoute.ProductHome.route)
         FlowEvent.ProductHomeDismissed -> navController.popBackStack()
+
+        FlowEvent.MoveOnCardDetails -> navController.navigate(ScreenRoute.CardDetails.route)
+        FlowEvent.ScreenDetailsDismissed -> navController.popBackStack()
       }
     }
   }
@@ -55,6 +59,9 @@ object AppFlow : GraphFlow() {
     }
     animatedComposable(ScreenRoute.ProductHome.route, ScreenTransitionAnimation.Horizontal) {
       ProductsHomeScreen()
+    }
+    animatedComposable(ScreenRoute.CardDetails.route, ScreenTransitionAnimation.Horizontal) {
+      CardDetailsScreen()
     }
   }
 
