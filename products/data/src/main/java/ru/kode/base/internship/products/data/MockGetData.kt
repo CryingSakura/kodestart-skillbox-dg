@@ -23,7 +23,7 @@ val cardId3: String = randomUuid()
 
 val card1 = CardDataEntity(
   accountId = accountId1,
-  number = "1111222233334444",
+  number = "9999999999999999",
   expiredAt = "2022-04-21T00:00:00Z",
   status = CardStatus.valueOf("Active"),
   name = "test1",
@@ -45,10 +45,10 @@ val card2 = CardDataEntity(
 
 val card3 = CardDataEntity(
   accountId = accountId1,
-  number = "1111222233334444",
+  number = "5555666677778888",
   expiredAt = "2022-04-21T00:00:00Z",
-  status = CardStatus.valueOf("Active"),
-  name = "test2",
+  status = CardStatus.valueOf("Blocked"),
+  name = "test3",
   cardType = CardType.valueOf("Physical"),
   paymentSystem = PaymentSystem.valueOf("Visa"),
   cardId = CardDataEntity.Id(cardId3)

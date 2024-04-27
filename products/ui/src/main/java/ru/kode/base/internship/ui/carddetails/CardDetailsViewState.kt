@@ -7,11 +7,11 @@ import ru.kode.base.internship.products.domain.CardStatus
 import ru.kode.base.internship.products.domain.CardType
 import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.domain.entity.CardDataEntity
-import ru.kode.base.internship.ui.carddetails.states.CardListState
+import ru.kode.base.internship.ui.carddetails.states.ListState
 
 @Immutable
 data class CardDetailsViewState(
-  val cardListState: CardListState = CardListState.CardActions,
+  val listState: ListState = ListState.Actions,
   val cardDetails: CardDataEntity = CardDataEntity(
     accountId = accountId1,
     number = "1111222233334444",

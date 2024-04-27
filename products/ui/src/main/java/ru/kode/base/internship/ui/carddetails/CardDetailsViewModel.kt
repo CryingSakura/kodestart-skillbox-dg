@@ -6,7 +6,7 @@ import ru.dimsuz.unicorn2.machine
 import ru.kode.base.core.BaseViewModel
 import ru.kode.base.internship.products.domain.UseCases.ProductsUseCase
 import ru.kode.base.internship.routing.FlowEvent
-import ru.kode.base.internship.ui.carddetails.states.CardListState
+import ru.kode.base.internship.ui.carddetails.states.ListState
 import javax.inject.Inject
 
 class CardDetailsViewModel @Inject constructor(
@@ -28,17 +28,17 @@ class CardDetailsViewModel @Inject constructor(
     }
     onEach(intent(CardDetailsIntents::showActions)) {
       transitionTo { state, _ ->
-        state.copy(cardListState = CardListState.CardActions)
+        state.copy(listState = ListState.Actions)
       }
     }
     onEach(intent(CardDetailsIntents::showHistory)) {
       transitionTo { state, _ ->
-        state.copy(cardListState = CardListState.History)
+        state.copy(listState = ListState.History)
       }
     }
     onEach(intent(CardDetailsIntents::showPayment)) {
       transitionTo { state, _ ->
-        state.copy(cardListState = CardListState.Payments)
+        state.copy(listState = ListState.Payments)
       }
     }
     onEach(intent(CardDetailsIntents::changeText)) {

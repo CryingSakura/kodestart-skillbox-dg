@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import ru.kode.base.internship.products.ui.R
-import ru.kode.base.internship.ui.carddetails.states.CardListState
+import ru.kode.base.internship.ui.carddetails.states.ListState
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
 
 @Composable
@@ -22,7 +22,7 @@ fun ActionRow(
   onActionsClick: () -> Unit,
   onHistoryClick: () -> Unit,
   onPaymentsClick: () -> Unit,
-  state: CardListState,
+  state: ListState,
 ) {
   Row(
     modifier = modifier,
@@ -34,13 +34,13 @@ fun ActionRow(
       onClick = onHistoryClick,
       shape = CircleShape,
       colors = ButtonDefaults.buttonColors(
-        backgroundColor = if (state == CardListState.History)
+        backgroundColor = if (state == ListState.History)
           {
             AppTheme.colors.contendAccentTertiary
           } else {
           AppTheme.colors.contendSecondary
         },
-        contentColor = if (state == CardListState.History)
+        contentColor = if (state == ListState.History)
           {
             AppTheme.colors.contendAccentPrimary
           } else {
@@ -58,13 +58,13 @@ fun ActionRow(
       onClick = onActionsClick,
       shape = CircleShape,
       colors = ButtonDefaults.buttonColors(
-        backgroundColor = if (state == CardListState.CardActions)
+        backgroundColor = if (state == ListState.Actions)
           {
             AppTheme.colors.contendAccentTertiary
           } else {
           AppTheme.colors.contendSecondary
         },
-        contentColor = if (state == CardListState.CardActions)
+        contentColor = if (state == ListState.Actions)
           {
             AppTheme.colors.contendAccentPrimary
           } else {
@@ -82,13 +82,13 @@ fun ActionRow(
       onClick = onPaymentsClick,
       shape = CircleShape,
       colors = ButtonDefaults.buttonColors(
-        backgroundColor = if (state == CardListState.Payments)
+        backgroundColor = if (state == ListState.Payments)
           {
             AppTheme.colors.contendAccentTertiary
           } else {
           AppTheme.colors.contendSecondary
         },
-        contentColor = if (state == CardListState.Payments)
+        contentColor = if (state == ListState.Payments)
           {
             AppTheme.colors.contendAccentPrimary
           } else {

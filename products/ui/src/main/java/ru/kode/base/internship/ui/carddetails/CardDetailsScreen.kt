@@ -23,7 +23,7 @@ import ru.kode.base.internship.ui.carddetails.components.ActionRow
 import ru.kode.base.internship.ui.carddetails.components.Bar
 import ru.kode.base.internship.ui.carddetails.components.CardDetailsListItem
 import ru.kode.base.internship.ui.carddetails.components.CardIcon
-import ru.kode.base.internship.ui.carddetails.states.CardListState
+import ru.kode.base.internship.ui.carddetails.states.ListState
 import ru.kode.base.internship.ui.core.uikit.screen.AppScreen
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
 
@@ -78,11 +78,11 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
           onActionsClick = intents.showActions,
           onHistoryClick = intents.showHistory,
           onPaymentsClick = intents.showPayment,
-          state = state.cardListState
+          state = state.listState
         )
       }
-      when (state.cardListState) {
-        CardListState.CardActions -> items(itemsColumnList) { itemData ->
+      when (state.listState) {
+        ListState.Actions -> items(itemsColumnList) { itemData ->
           itemData.onEach {
             CardDetailsListItem(
               modifier = Modifier.fillMaxWidth(),
@@ -92,8 +92,8 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
             )
           }
         }
-        CardListState.Payments -> {}
-        CardListState.History -> {}
+        ListState.Payments -> {}
+        ListState.History -> {}
       }
     }
   }
