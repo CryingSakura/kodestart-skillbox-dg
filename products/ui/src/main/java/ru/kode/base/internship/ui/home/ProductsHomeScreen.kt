@@ -98,7 +98,7 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
             modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
             onAccountItemClick = intents.accountDetailsRequested,
             cards = account.cards,
-            onCardClick = intents.cardDetailsRequested,
+            onCardClick = intents,
             money = Money(balance = account.balance, currency = account.currency),
             unLastAccountInList = account != state.accounts.last(),
           )

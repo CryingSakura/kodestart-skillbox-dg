@@ -21,7 +21,7 @@ class DepositRepositoryImpl @Inject constructor() : DepositRepository {
 
   override fun term(id: DepositDataEntity.Id): Flow<DepositDataEntity> {
     return flow {
-      MockGetData.getDeposits().find { it.depositId == id }
+      MockGetData.getDeposits().find { it.depositId == id }?.let { emit(it) }
     }
   }
 }

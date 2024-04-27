@@ -28,12 +28,13 @@ import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.domain.entity.CardDataEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
+import ru.kode.base.internship.ui.home.ProductsHomeIntents
 
 @Composable
 fun AccountItem(
   modifier: Modifier = Modifier,
   onAccountItemClick: () -> Unit,
-  onCardClick: () -> Unit,
+  onCardClick: ProductsHomeIntents,
   cards: List<CardDataEntity>,
   unLastAccountInList: Boolean,
   money: Money,
@@ -44,7 +45,7 @@ fun AccountItem(
     modifier = modifier
       .heightIn(min = 72.dp)
       .fillMaxWidth()
-      .clickable(onClick = onAccountItemClick),
+      .clickable(onClick = { onAccountItemClick() }),
     verticalAlignment = Alignment.CenterVertically,
   ) {
     Icon(
@@ -91,7 +92,7 @@ fun AccountItem(
     Column(modifier = modifier) {
       for (card in cards) {
         CardItem(
-          onCardClick = onCardClick,
+          onCardClick = { onCardClick.cardDetailsRequested(card.cardId) },
           cardName = card.name,
           cardPaymentSystem = card.paymentSystem,
           cardStatus = card.status,
