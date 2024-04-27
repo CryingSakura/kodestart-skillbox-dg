@@ -1,9 +1,11 @@
 package ru.kode.base.internship.products.domain.entity
 
+import androidx.compose.runtime.Immutable
 import ru.kode.base.internship.products.domain.CardStatus
 import ru.kode.base.internship.products.domain.CardType
 import ru.kode.base.internship.products.domain.PaymentSystem
 
+@Immutable
 data class CardDataEntity(
   val cardId: CardDataEntity.Id,
   val accountId: String,
