@@ -69,7 +69,13 @@ class ProductsHomeViewModel @Inject constructor(
 
     onEach(intent(ProductsHomeIntents::accountDetailsRequested)) {}
     onEach(intent(ProductsHomeIntents::depositDetailsRequested)) {}
-    onEach(intent(ProductsHomeIntents::cardDetailsRequested)) {}
+
+    onEach(intent(ProductsHomeIntents::cardDetailsRequested)) {
+      action { _, _, cardId ->
+        useCase.cardDetails(cardId)
+        flowEvents.tryEmit(FlowEvent.MoveOnCardDetails)
+      }
+    }
     onEach(intent(ProductsHomeIntents::openNewAccountOrProduct)) {}
   }
 }

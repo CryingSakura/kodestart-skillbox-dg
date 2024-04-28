@@ -3,7 +3,6 @@ package ru.kode.base.internship.ui.home
 import androidx.compose.runtime.Immutable
 import ru.kode.base.internship.core.domain.entity.LceState
 import ru.kode.base.internship.products.domain.entity.AccountDataEntity
-import ru.kode.base.internship.products.domain.entity.CardDataEntity
 import ru.kode.base.internship.products.domain.entity.DepositDataEntity
 
 @Immutable

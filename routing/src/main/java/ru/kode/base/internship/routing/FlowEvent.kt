@@ -6,4 +6,6 @@ sealed class FlowEvent {
   data object EnterPasswordDismissed : FlowEvent()
   data object UserLoggedIn : FlowEvent()
   data object ProductHomeDismissed : FlowEvent()
+  data object MoveOnCardDetails : FlowEvent()
+  data object ScreenDetailsDismissed : FlowEvent()
 }

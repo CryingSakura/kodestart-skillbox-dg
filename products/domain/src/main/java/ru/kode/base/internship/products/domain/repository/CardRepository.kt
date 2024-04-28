@@ -1,7 +1,8 @@
 package ru.kode.base.internship.products.domain.repository
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import ru.kode.base.internship.products.domain.entity.CardDataEntity
 interface CardRepository {
-  fun cardDetails(id: CardDataEntity.Id): Flow<CardDataEntity>
+  val cardDetails: MutableStateFlow<CardDataEntity>
+  fun cardDetails(id: CardDataEntity.Id)
 }
