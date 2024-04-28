@@ -25,14 +25,12 @@ class ProductsUseCase @Inject constructor(
     val depositState: LceState = LceState.None,
     val cardState: LceState = LceState.None,
   )
-
   val deposits = depRepository.depositsFlow
   val accounts = accRepository.accountsFlow
-  val cardDetails = cardRepository.cardDetails
-
+  val cardDetails = cardRepository.card
+  val money = cardRepository.money
   val accountsState: Flow<LceState>
     get() = stateFlow.map { it.accountsState }.distinctUntilChanged()
-
   suspend fun fetchAccounts() {
     setState { copy(accountsState = LceState.Loading) }
     delay(2000)
@@ -43,7 +41,6 @@ class ProductsUseCase @Inject constructor(
       setState { copy(accountsState = LceState.Error(e.message)) }
     }
   }
-
   suspend fun refresh() {
     setState {
       copy(
@@ -71,10 +68,8 @@ class ProductsUseCase @Inject constructor(
       }
     }
   }
-
   val depositsState: Flow<LceState>
     get() = stateFlow.map { it.depositState }.distinctUntilChanged()
-
   suspend fun fetchDeposits() {
     setState { copy(depositState = LceState.Loading) }
     delay(2000)
@@ -85,7 +80,6 @@ class ProductsUseCase @Inject constructor(
       setState { copy(depositState = LceState.Error(e.message)) }
     }
   }
-
   suspend fun loadAll() {
     setState {
       copy(
@@ -115,14 +109,17 @@ class ProductsUseCase @Inject constructor(
 
   /*  val cardState: Flow<LceState>
       get() = stateFlow.map { it.cardState }.distinctUntilChanged()*/
-
   suspend fun cardDetails(id: CardDataEntity.Id) {
     setState { copy(cardState = LceState.Loading) }
     try {
       cardRepository.cardDetails(id)
+      cardRepository.getMoney(cardRepository.card.value.accountId)
       setState { copy(cardState = LceState.Content) }
     } catch (e: Exception) {
       setState { copy(cardState = LceState.Error(e.message)) }
     }
+  }
+  fun rename(newName: String, id: CardDataEntity.Id) {
+    cardRepository.rename(newName, id)
   }
 }
