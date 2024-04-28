@@ -34,16 +34,14 @@ fun ActionRow(
       onClick = onHistoryClick,
       shape = CircleShape,
       colors = ButtonDefaults.buttonColors(
-        backgroundColor = if (state == ListState.History)
-          {
-            AppTheme.colors.contendAccentTertiary
-          } else {
+        backgroundColor = if (state == ListState.History) {
+          AppTheme.colors.contendAccentTertiary
+        } else {
           AppTheme.colors.contendSecondary
         },
-        contentColor = if (state == ListState.History)
-          {
-            AppTheme.colors.contendAccentPrimary
-          } else {
+        contentColor = if (state == ListState.History) {
+          AppTheme.colors.contendAccentPrimary
+        } else {
           AppTheme.colors.contendAccentTertiary
         }
       )
@@ -58,16 +56,14 @@ fun ActionRow(
       onClick = onActionsClick,
       shape = CircleShape,
       colors = ButtonDefaults.buttonColors(
-        backgroundColor = if (state == ListState.Actions)
-          {
-            AppTheme.colors.contendAccentTertiary
-          } else {
+        backgroundColor = if (state == ListState.Actions) {
+          AppTheme.colors.contendAccentTertiary
+        } else {
           AppTheme.colors.contendSecondary
         },
-        contentColor = if (state == ListState.Actions)
-          {
-            AppTheme.colors.contendAccentPrimary
-          } else {
+        contentColor = if (state == ListState.Actions) {
+          AppTheme.colors.contendAccentPrimary
+        } else {
           AppTheme.colors.contendAccentTertiary
         }
       )
@@ -82,16 +78,14 @@ fun ActionRow(
       onClick = onPaymentsClick,
       shape = CircleShape,
       colors = ButtonDefaults.buttonColors(
-        backgroundColor = if (state == ListState.Payments)
-          {
-            AppTheme.colors.contendAccentTertiary
-          } else {
+        backgroundColor = if (state == ListState.Payments) {
+          AppTheme.colors.contendAccentTertiary
+        } else {
           AppTheme.colors.contendSecondary
         },
-        contentColor = if (state == ListState.Payments)
-          {
-            AppTheme.colors.contendAccentPrimary
-          } else {
+        contentColor = if (state == ListState.Payments) {
+          AppTheme.colors.contendAccentPrimary
+        } else {
           AppTheme.colors.contendAccentTertiary
         }
       )

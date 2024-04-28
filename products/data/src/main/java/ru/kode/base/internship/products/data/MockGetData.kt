@@ -22,18 +22,18 @@ val cardId2: String = randomUuid()
 val cardId3: String = randomUuid()
 
 val card1 = CardDataEntity(
-  accountId = accountId1,
+  accountId = AccountDataEntity.Id(accountId1),
   number = "9999999999999999",
   expiredAt = "2022-04-21T00:00:00Z",
   status = CardStatus.valueOf("Active"),
   name = "test1",
   cardType = CardType.valueOf("Physical"),
   paymentSystem = PaymentSystem.valueOf("Visa"),
-  cardId = CardDataEntity.Id(cardId1)
+  cardId = CardDataEntity.Id(cardId1),
 )
 
 val card2 = CardDataEntity(
-  accountId = accountId1,
+  accountId = AccountDataEntity.Id(accountId1),
   number = "1111222233334444",
   expiredAt = "2022-04-21T00:00:00Z",
   status = CardStatus.valueOf("Active"),
@@ -44,7 +44,7 @@ val card2 = CardDataEntity(
 )
 
 val card3 = CardDataEntity(
-  accountId = accountId1,
+  accountId = AccountDataEntity.Id(accountId2),
   number = "5555666677778888",
   expiredAt = "2022-04-21T00:00:00Z",
   status = CardStatus.valueOf("Blocked"),
@@ -118,5 +118,10 @@ object MockGetData {
       card2,
       card3
     )
+  }
+
+  fun renameCard(id: CardDataEntity.Id, newName: String) {
+    val cards = getCard()
+    cards.find { it.cardId == id }!!.name = newName
   }
 }
