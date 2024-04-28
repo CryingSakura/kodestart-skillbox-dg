@@ -36,6 +36,9 @@ import ru.kode.base.core.compose.OnBackPressedHandler
 import ru.kode.base.core.rememberViewIntents
 import ru.kode.base.core.viewmodel.daggerViewModel
 import ru.kode.base.internship.core.domain.entity.LceState
+import ru.kode.base.internship.products.domain.Money
+import ru.kode.base.internship.products.domain.entity.AccountDataEntity
+import ru.kode.base.internship.products.domain.entity.DepositDataEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.component.AccountItem
 import ru.kode.base.internship.ui.component.DepositItem
@@ -81,10 +84,45 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
             .fillMaxWidth()
         )
       }
-    }
-
-    if (state.loadingAccountsLceStates is LceState.Content || state.loadingDepositsLceStates is LceState.Content) {
+    } else if (state.loadingAccountsLceStates is LceState.Error &&
+      state.loadingDepositsLceStates is LceState.Error
+    ) {
+      ProductsHomeError(
+        onRefreshClick = intents.refreshData,
+        onCloseClick = intents.navigateOnBack,
+      )
+    } else {
       LazyColumn(modifier = Modifier.fillMaxSize()) {
+        fun LazyListScope.accounts(accounts: List<AccountDataEntity>) = items(accounts) { account ->
+          AccountItem(
+            modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
+            onAccountItemClick = intents.accountDetailsRequested,
+            cards = account.cards,
+            onCardClick = intents.cardDetailsRequested,
+            money = Money(balance = account.balance, currency = account.currency),
+            unLastAccountInList = account != state.accounts.last(),
+          )
+        }
+        fun LazyListScope.deposits(deposits: List<DepositDataEntity>) = items(deposits) { depAcc ->
+          Column(Modifier.background(color = AppTheme.colors.backgroundSecondary)) {
+            DepositItem(
+              modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
+              onDepositClick = intents.depositDetailsRequested,
+              depositCloseDate = depAcc.closeDate,
+              depositCurrency = depAcc.currency,
+              depositName = depAcc.name,
+              depositRate = depAcc.rate,
+              money = Money(balance = depAcc.balance, currency = depAcc.currency)
+            )
+            if (depAcc != state.deposits.last()) {
+              Divider(
+                modifier = Modifier.padding(start = 72.dp, end = 16.dp),
+                color = AppTheme.colors.contendSecondary,
+                thickness = 2.dp
+              )
+            }
+          }
+        }
         item {
           Text(
             modifier = Modifier
@@ -108,23 +146,13 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
         when (state.loadingAccountsLceStates) {
           LceState.Content -> {
             if (state.accounts.isNotEmpty()) {
-              fun LazyListScope.accounts(accounts: List<Account>) = items(accounts) { account ->
-                AccountItem(
-                  modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
-                  onAccountItemClick = intents.accountDetailsRequested,
-                  cards = account.cards,
-                  onCardClick = intents.cardDetailsRequested,
-                  money = Money(balance = account.balance, currency = account.currency),
-                  unLastAccountInList = account != state.accounts.last(),
-                )
-              }
               accounts(state.accounts)
             }
           }
 
           is LceState.Error -> {
             item {
-              SomethingWrongComponent(onClick = intents.refreshAccountData)
+              SomethingWrongComponent(onClick = intents.refreshAccounts)
             }
           }
 
@@ -136,7 +164,6 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
               )
             }
           }
-
           LceState.None -> {}
         }
         item {
@@ -155,33 +182,13 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
         when (state.loadingDepositsLceStates) {
           LceState.Content -> {
             if (state.deposits.isNotEmpty()) {
-              fun LazyListScope.deposits(deposits: List<Deposit>) = items(deposits) { depAcc ->
-                Column(Modifier.background(color = AppTheme.colors.backgroundSecondary)) {
-                  DepositItem(
-                    modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
-                    onDepositClick = intents.depositDetailsRequested,
-                    depositCloseDate = depAcc.closeDate,
-                    depositCurrency = depAcc.currency,
-                    depositName = depAcc.name,
-                    depositRate = depAcc.rate,
-                    money = Money(balance = depAcc.balance, currency = depAcc.currency)
-                  )
-                  if (depAcc != state.deposits.last()) {
-                    Divider(
-                      modifier = Modifier.padding(start = 72.dp, end = 16.dp),
-                      color = AppTheme.colors.contendSecondary,
-                      thickness = 2.dp
-                    )
-                  }
-                }
-              }
               deposits(state.deposits)
             }
           }
 
           is LceState.Error -> {
             item {
-              SomethingWrongComponent(onClick = intents.refreshDepositData)
+              SomethingWrongComponent(onClick = intents.refreshDeposits)
             }
           }
 
@@ -210,17 +217,7 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
         }
       }
     }
-    if (state.loadingAccountsLceStates == LceState.Error(
-        "Failed to load data"
-      ) && state.loadingDepositsLceStates == LceState.Error(
-        "Failed to load data"
-      )
-    ) {
-      ProductsHomeError(
-        onRefreshClick = intents.refreshData,
-        onCloseClick = intents.navigateOnBack,
-      )
-    }
+
     PullRefreshIndicator(
       modifier = Modifier.align(Alignment.TopCenter),
       refreshing = false,

@@ -1,38 +1,32 @@
 package ru.kode.base.internship.ui.home
 
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 import ru.dimsuz.unicorn2.Machine
 import ru.dimsuz.unicorn2.machine
 import ru.kode.base.core.BaseViewModel
+import ru.kode.base.internship.products.domain.UseCases.ProductsUseCase
 import ru.kode.base.internship.routing.FlowEvent
 import javax.inject.Inject
 
 class ProductsHomeViewModel @Inject constructor(
+  private val useCase: ProductsUseCase,
   private val flowEvents: MutableSharedFlow<FlowEvent>,
 ) : BaseViewModel<ProductsHomeViewState, ProductsHomeIntents>() {
   override fun buildMachine(): Machine<ProductsHomeViewState> = machine {
     initial = ProductsHomeViewState() to {
-      viewModelScope.launch {
-        fetchDepositsData()
-      }
-      viewModelScope.launch {
-        fetchAccountsData()
+      executeAsync {
+        useCase.loadAll()
       }
     }
 
-    onEach(intent(ProductsHomeIntents::refreshAccountData)) {
+    onEach(intent(ProductsHomeIntents::refreshAccounts)) {
       action { _, _, _ ->
-        viewModelScope.launch {
-          fetchAccountsData()
-        }
+        useCase.fetchAccounts()
       }
     }
-    onEach(intent(ProductsHomeIntents::refreshDepositData)) {
+    onEach(intent(ProductsHomeIntents::refreshDeposits)) {
       action { _, _, _ ->
-        viewModelScope.launch {
-          fetchDepositsData()
-        }
+        useCase.fetchDeposits()
       }
     }
 
@@ -44,34 +38,32 @@ class ProductsHomeViewModel @Inject constructor(
 
     onEach(intent(ProductsHomeIntents::refreshData)) {
       action { _, _, _ ->
-        viewModelScope.launch {
-          fetchAccountsData()
-        }
-        viewModelScope.launch {
-          fetchDepositsData()
+        executeAsync {
+          useCase.refresh()
         }
       }
     }
 
-    onEach(dataAccountsState) {
+    onEach(useCase.accountsState) {
       transitionTo { state, dataAccountsState ->
         state.copy(loadingAccountsLceStates = dataAccountsState)
       }
     }
-    onEach(dataDepositsState) {
+    onEach(useCase.depositsState) {
       transitionTo { state, dataDepositsState ->
         state.copy(loadingDepositsLceStates = dataDepositsState)
       }
     }
 
-    onEach(accountsData) {
-      transitionTo { state, accountsData ->
-        state.copy(accounts = accountsData)
+    onEach(useCase.accounts) {
+      transitionTo { state, accounts ->
+        state.copy(accounts = accounts)
       }
     }
-    onEach(depositsData) {
-      transitionTo { state, depositsData ->
-        state.copy(deposits = depositsData)
+
+    onEach(useCase.deposits) {
+      transitionTo { state, deposits ->
+        state.copy(deposits = deposits)
       }
     }
 

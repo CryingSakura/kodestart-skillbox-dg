@@ -16,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import ru.kode.base.internship.products.domain.CardStatus
+import ru.kode.base.internship.products.domain.CardType
+import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.cardicon.CardIcon
-import ru.kode.base.internship.ui.cardicon.PaymentSystem
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
-import ru.kode.base.internship.ui.home.CardStatus
-import ru.kode.base.internship.ui.home.CardType
 
 @Composable
 fun CardItem(

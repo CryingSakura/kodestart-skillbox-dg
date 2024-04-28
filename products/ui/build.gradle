@@ -10,6 +10,6 @@ android {
 
 dependencies {
   api project(":core:ui:uikit")
-
   api project(':routing')
+  api project(':products:domain')
 }

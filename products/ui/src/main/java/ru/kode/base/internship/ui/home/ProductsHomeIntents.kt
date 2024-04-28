@@ -9,6 +9,6 @@ class ProductsHomeIntents : BaseViewIntents() {
   val accountDetailsRequested = intent(name = "accountDetailsRequested")
   val depositDetailsRequested = intent(name = "depositDetailsRequested")
   val refreshData = intent(name = "refreshData")
-  val refreshDepositData = intent(name = "refreshDepositData")
-  val refreshAccountData = intent(name = "refreshAccountData")
+  val refreshDeposits = intent(name = "refreshDeposit")
+  val refreshAccounts = intent(name = "refreshAccount")
 }

@@ -17,10 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.kode.base.internship.products.domain.Currency
+import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
-import ru.kode.base.internship.ui.home.Currency
-import ru.kode.base.internship.ui.home.Money
 
 @Composable
 fun DepositItem(

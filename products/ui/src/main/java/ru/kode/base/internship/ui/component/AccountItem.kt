@@ -23,18 +23,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ru.kode.base.internship.products.domain.Currency
+import ru.kode.base.internship.products.domain.Money
+import ru.kode.base.internship.products.domain.entity.CardDataEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
-import ru.kode.base.internship.ui.home.Card
-import ru.kode.base.internship.ui.home.Currency
-import ru.kode.base.internship.ui.home.Money
 
 @Composable
 fun AccountItem(
   modifier: Modifier = Modifier,
   onAccountItemClick: () -> Unit,
   onCardClick: () -> Unit,
-  cards: List<Card>,
+  cards: List<CardDataEntity>,
   unLastAccountInList: Boolean,
   money: Money,
 ) {
@@ -71,22 +71,20 @@ fun AccountItem(
       )
     }
     Spacer(modifier = Modifier.weight(1f))
-    if (cards.isNotEmpty()) {
-      IconButton(
-        modifier = Modifier.padding(end = 12.dp),
-        onClick = { cardsExpanded = !cardsExpanded },
-      ) {
-        Icon(
-          painter = painterResource(
-            id = if (cardsExpanded)
-              R.drawable.ic_button_shows_40x28
-            else
-              R.drawable.ic_button_hides_40x28
-          ),
-          contentDescription = "test",
-          tint = Color.Unspecified
-        )
-      }
+    IconButton(
+      modifier = Modifier.padding(end = 12.dp),
+      onClick = { cardsExpanded = !cardsExpanded },
+    ) {
+      Icon(
+        painter = painterResource(
+          id = if (cardsExpanded)
+            R.drawable.ic_button_shows_40x28
+          else
+            R.drawable.ic_button_hides_40x28
+        ),
+        contentDescription = "test",
+        tint = Color.Unspecified
+      )
     }
   }
   if (cardsExpanded && cards.isNotEmpty()) {

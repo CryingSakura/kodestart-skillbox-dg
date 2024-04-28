@@ -80,7 +80,7 @@ dependencies {
   implementation libs.coil
   implementation libs.firebase.core
   implementation libs.firebase.messaging
-  implementation project(':products:ui')
+  api project(':products:ui')
 
 
 }
