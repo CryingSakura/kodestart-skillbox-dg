@@ -1,14 +1,9 @@
 package ru.kode.base.internship.products.domain.repository
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import ru.kode.base.internship.products.domain.Money
-import ru.kode.base.internship.products.domain.entity.AccountDataEntity
-import ru.kode.base.internship.products.domain.entity.CardDataEntity
+import kotlinx.coroutines.flow.Flow
+import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 interface CardRepository {
-  val money: MutableStateFlow<Money>
-  val card: MutableStateFlow<CardDataEntity>
-  fun cardDetails(id: CardDataEntity.Id)
-
-  fun rename(newName: String, id: CardDataEntity.Id)
-  fun getMoney(id: AccountDataEntity.Id)
+  fun rename(newName: String, id: CardDomainEntity.Id)
+  suspend fun getCardById(id: CardDomainEntity.Id): CardDomainEntity?
+  fun getAllCards(): Flow<List<CardDomainEntity>>
 }
