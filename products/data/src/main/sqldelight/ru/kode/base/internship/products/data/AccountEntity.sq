@@ -1,0 +1,28 @@
+CREATE TABLE AccountEntity (
+    id INTEGER NOT NULL PRIMARY KEY,
+    balance TEXT NOT NULL,
+    currency TEXT NOT NULL,
+    number TEXT NOT NULL,
+    status TEXT NOT NULL
+);
+
+getAccountById:
+SELECT * FROM AccountEntity
+WHERE id = :id;
+
+getAllAccounts:
+SELECT * FROM AccountEntity;
+
+insertAccount:
+INSERT OR REPLACE
+INTO AccountEntity
+VALUES ( ?, ?, ?, ?, ?);
+
+insertAccountObj:
+INSERT OR REPLACE
+INTO AccountEntity
+VALUES ?;
+
+deleteAccount:
+DELETE FROM AccountEntity
+WHERE id = :id;

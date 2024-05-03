@@ -1,0 +1,37 @@
+CREATE TABLE CardEntity (
+    id INTEGER NOT NULL PRIMARY KEY,
+    accountId INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    number TEXT NOT NULL,
+    paymentSystem TEXT NOT NULL,
+    status TEXT NOT NULL,
+    cardType TEXT,
+    expiredAt TEXT,
+
+    CONSTRAINT accountIdFk FOREIGN KEY (accountId) REFERENCES AccountEntity (id)
+);
+
+getCardById:
+SELECT * FROM CardEntity
+WHERE id = :id;
+
+getCardsById:
+SELECT * FROM CardEntity
+WHERE accountId = :accountId;
+
+getAllCards:
+SELECT * FROM CardEntity;
+
+insertCard:
+INSERT OR REPLACE
+INTO CardEntity
+VALUES ( ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertCardObj:
+INSERT OR REPLACE
+INTO CardEntity
+VALUES ?;
+
+deleteCard:
+DELETE FROM CardEntity
+WHERE id = :id;
