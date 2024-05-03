@@ -23,7 +23,7 @@ class CardDetailsViewModel @Inject constructor(
 
     onEach(prodUseCase.cardDetails) {
       transitionTo { state, details ->
-        state.copy(cardDetails = details)
+        state.copy(cardDetails = details!!)
       }
     }
     onEach(intent(CardDetailsIntents::showActions)) {
@@ -51,9 +51,9 @@ class CardDetailsViewModel @Inject constructor(
         state.copy(showDialog = true)
       }
     }
-    onEach(intent(CardDetailsIntents::confirm)) {
+    onEach(intent(CardDetailsIntents::confirmRenaming)) {
       action { _, newState, _ ->
-        prodUseCase.rename(newState.enterName, newState.cardDetails.cardId)
+        newState.cardDetails.let { prodUseCase.rename(newState.enterName, it.cardId) }
       }
       transitionTo { state, _ ->
         state.copy(enterName = "")
@@ -64,12 +64,12 @@ class CardDetailsViewModel @Inject constructor(
     }
 
     onEach(prodUseCase.money) {
-      transitionTo { state, balance ->
-        state.copy(money = balance)
+      transitionTo { state, money ->
+        state.copy(money = money)
       }
     }
 
-    onEach(intent(CardDetailsIntents::dismiss)) {
+    onEach(intent(CardDetailsIntents::dismissRenaming)) {
       transitionTo { state, _ ->
         state.copy(showDialog = false)
       }

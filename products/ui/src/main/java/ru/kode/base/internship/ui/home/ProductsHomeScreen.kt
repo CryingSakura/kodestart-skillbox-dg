@@ -37,8 +37,8 @@ import ru.kode.base.core.rememberViewIntents
 import ru.kode.base.core.viewmodel.daggerViewModel
 import ru.kode.base.internship.core.domain.entity.LceState
 import ru.kode.base.internship.products.domain.Money
-import ru.kode.base.internship.products.domain.entity.AccountDataEntity
-import ru.kode.base.internship.products.domain.entity.DepositDataEntity
+import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
+import ru.kode.base.internship.products.domain.entity.DepositDomainEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.component.AccountItem
 import ru.kode.base.internship.ui.component.DepositItem
@@ -93,17 +93,20 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
       )
     } else {
       LazyColumn(modifier = Modifier.fillMaxSize()) {
-        fun LazyListScope.accounts(accounts: List<AccountDataEntity>) = items(accounts) { account ->
-          AccountItem(
-            modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
-            onAccountItemClick = intents.accountDetailsRequested,
-            cards = account.cards,
-            onCardClick = intents,
-            money = Money(balance = account.balance, currency = account.currency),
-            unLastAccountInList = account != state.accounts.last(),
-          )
+        fun LazyListScope.accounts(accounts: List<AccountDomainEntity>) = items(accounts) { account ->
+          Column(Modifier.background(color = AppTheme.colors.backgroundSecondary)) {
+            AccountItem(
+              modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
+              accountId = account.accountId,
+              onAccountItemClick = intents.accountDetailsRequested,
+              cards = account.cards,
+              onCardClick = intents,
+              money = Money(balance = account.balance, currency = account.currency),
+              unLastAccountInList = account != state.accounts.last(),
+            )
+          }
         }
-        fun LazyListScope.deposits(deposits: List<DepositDataEntity>) = items(deposits) { depAcc ->
+        fun LazyListScope.deposits(deposits: List<DepositDomainEntity>) = items(deposits) { depAcc ->
           Column(Modifier.background(color = AppTheme.colors.backgroundSecondary)) {
             DepositItem(
               modifier = Modifier.background(AppTheme.colors.backgroundSecondary),

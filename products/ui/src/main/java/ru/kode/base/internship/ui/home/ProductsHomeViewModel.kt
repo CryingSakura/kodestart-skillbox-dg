@@ -39,7 +39,7 @@ class ProductsHomeViewModel @Inject constructor(
     onEach(intent(ProductsHomeIntents::refreshData)) {
       action { _, _, _ ->
         executeAsync {
-          prodUseCase.refresh()
+          prodUseCase.loadAll()
         }
       }
     }

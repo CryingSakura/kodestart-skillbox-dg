@@ -6,13 +6,13 @@ import ru.kode.base.internship.products.domain.CardType
 import ru.kode.base.internship.products.domain.PaymentSystem
 
 @Immutable
-data class CardDataEntity(
-  val cardId: CardDataEntity.Id,
-  val accountId: AccountDataEntity.Id,
+data class CardDomainEntity(
+  val cardId: CardDomainEntity.Id,
+  val accountId: AccountDomainEntity.Id,
   val number: String,
   val expiredAt: String,
   val status: CardStatus,
-  var name: String,
+  val name: String,
   val cardType: CardType,
   val paymentSystem: PaymentSystem
 ) {

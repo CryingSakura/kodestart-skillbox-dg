@@ -25,19 +25,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.kode.base.internship.products.domain.Currency
 import ru.kode.base.internship.products.domain.Money
-import ru.kode.base.internship.products.domain.entity.CardDataEntity
+import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
+import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
 import ru.kode.base.internship.ui.home.ProductsHomeIntents
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun AccountItem(
   modifier: Modifier = Modifier,
   onAccountItemClick: () -> Unit,
   onCardClick: ProductsHomeIntents,
-  cards: List<CardDataEntity>,
+  cards: List<CardDomainEntity>,
   unLastAccountInList: Boolean,
   money: Money,
+  accountId: AccountDomainEntity.Id,
 ) {
   var cardsExpanded by remember { mutableStateOf(true) }
 
