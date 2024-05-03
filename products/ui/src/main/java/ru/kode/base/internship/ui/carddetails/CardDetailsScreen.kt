@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -23,6 +25,7 @@ import ru.kode.base.internship.ui.carddetails.components.ActionRow
 import ru.kode.base.internship.ui.carddetails.components.Bar
 import ru.kode.base.internship.ui.carddetails.components.CardDetailsListItem
 import ru.kode.base.internship.ui.carddetails.components.CardIcon
+import ru.kode.base.internship.ui.carddetails.components.RenameDialog
 import ru.kode.base.internship.ui.carddetails.states.ListState
 import ru.kode.base.internship.ui.core.uikit.screen.AppScreen
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
@@ -33,6 +36,15 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
   intents = rememberViewIntents()
 ) { state, intents ->
   OnBackPressedHandler(onBack = intents.navigateOnBack)
+  if (state.showDialog)
+    {
+      RenameDialog(
+        value = state.enterName,
+        onValueChanged = intents.changeText,
+        onConfirmRequest = intents.confirm,
+        onDismissRequest = intents.dismiss
+      )
+    }
   Box(
     modifier = Modifier
       .statusBarsPadding()
@@ -40,11 +52,6 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
       .imePadding()
       .background(AppTheme.colors.backgroundPrimary),
   ) {
-/*
-    if (state.showDialog){
-      ChangeNameDialog(value = state.enterName, onValueChanged = intents.changeText, onConfirmRequest = intents.confirm, onDismissRequest = intents.dismiss)
-    }*/
-
     LazyColumn(modifier = Modifier.fillMaxSize()) {
       item {
         Bar(
@@ -62,7 +69,7 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
             modifier = Modifier.padding(top = 16.dp),
             name = state.cardDetails.name,
             paymentSystem = state.cardDetails.paymentSystem,
-            balance = "77777 ₽",
+            money = state.money,
             cardType = state.cardDetails.cardType,
             lastFourDigits = state.cardDetails.number.takeLast(4),
             closeDate = state.cardDetails.expiredAt.take(4),
@@ -81,6 +88,7 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
           state = state.listState
         )
       }
+      item { Spacer(modifier = Modifier.height(16.dp)) }
       when (state.listState) {
         ListState.Actions -> items(itemsColumnList) { itemData ->
           itemData.onEach {

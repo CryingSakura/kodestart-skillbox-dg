@@ -47,20 +47,30 @@ class CardDetailsViewModel @Inject constructor(
       }
     }
     onEach(intent(CardDetailsIntents::alertDialog)) {
-      transitionTo { state, text ->
+      transitionTo { state, _ ->
         state.copy(showDialog = true)
       }
     }
     onEach(intent(CardDetailsIntents::confirm)) {
-      action { state, newState, _ ->
-        state.cardDetails.copy(name = newState.enterName)
+      action { _, newState, _ ->
+        prodUseCase.rename(newState.enterName, newState.cardDetails.cardId)
+      }
+      transitionTo { state, _ ->
+        state.copy(enterName = "")
+      }
+      transitionTo { state, _ ->
         state.copy(showDialog = false)
       }
     }
 
+    onEach(prodUseCase.money) {
+      transitionTo { state, balance ->
+        state.copy(money = balance)
+      }
+    }
+
     onEach(intent(CardDetailsIntents::dismiss)) {
-      action { state, newState, _ ->
-        state.cardDetails.copy(name = newState.enterName)
+      transitionTo { state, _ ->
         state.copy(showDialog = false)
       }
     }

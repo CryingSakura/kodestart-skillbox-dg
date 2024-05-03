@@ -1,6 +1,5 @@
 package ru.kode.base.internship.ui.carddetails.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.kode.base.internship.products.domain.CardStatus
 import ru.kode.base.internship.products.domain.CardType
+import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
@@ -33,7 +33,7 @@ import java.util.Locale
 fun CardIcon(
   modifier: Modifier = Modifier,
   paymentSystem: PaymentSystem,
-  balance: String,
+  money: Money,
   name: String,
   cardType: CardType,
   lastFourDigits: String,
@@ -88,7 +88,7 @@ fun CardIcon(
       Text(
         modifier = Modifier.padding(top = 24.dp),
         text = when (cardStatus) {
-          CardStatus.Active -> balance
+          CardStatus.Active -> money.format()
           CardStatus.Blocked -> {
             stringResource(id = R.string.blocked_card)
           }
