@@ -14,9 +14,7 @@ import javax.inject.Named
 object AuthDataModule {
   @Provides
   @SingleIn(AppScope::class)
-  fun provideAuthApi(
-    @Named("auth")retrofit: Retrofit
-  ): AuthApi {
+  fun provideAuthApi(@Named("auth")retrofit: Retrofit): AuthApi {
     return retrofit.create(AuthApi::class.java)
   }
 }

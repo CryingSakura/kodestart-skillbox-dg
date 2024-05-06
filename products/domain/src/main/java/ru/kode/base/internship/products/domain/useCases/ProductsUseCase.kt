@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -20,6 +21,7 @@ import ru.kode.base.internship.products.domain.Currency
 import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
 import ru.kode.base.internship.products.domain.entity.CardDomainEntity
+import ru.kode.base.internship.products.domain.entity.DepositDomainEntity
 import ru.kode.base.internship.products.domain.repository.AccountsRepository
 import ru.kode.base.internship.products.domain.repository.CardRepository
 import ru.kode.base.internship.products.domain.repository.DepositRepository
@@ -46,6 +48,7 @@ class ProductsUseCase @Inject constructor(
   val accounts: Flow<List<AccountDomainEntity>> = accRepository.getAllAccounts()
   val accountsState: Flow<LceState>
     get() = stateFlow.map { it.accountsState }.distinctUntilChanged()
+
 
   val cardDetails: Flow<CardDomainEntity> = stateFlow
     .mapNotNull { it.cardDetailsId }
@@ -125,4 +128,5 @@ class ProductsUseCase @Inject constructor(
       setState { copy(cardState = LceState.Error(e.message)) }
     }
   }
+
 }

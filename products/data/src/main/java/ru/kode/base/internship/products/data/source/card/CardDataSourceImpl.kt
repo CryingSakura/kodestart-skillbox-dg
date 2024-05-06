@@ -6,6 +6,7 @@ import app.cash.sqldelight.coroutines.mapToOne
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.withContext
 import ru.kode.base.core.di.AppScope
 import ru.kode.base.internship.products.data.CardEntity

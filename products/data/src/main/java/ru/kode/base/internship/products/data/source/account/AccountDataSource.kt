@@ -6,4 +6,5 @@ import ru.kode.base.internship.products.data.AccountEntity
 interface AccountDataSource {
   fun getAllAccounts(): Flow<List<AccountEntity>>
   suspend fun insertAccountObj(account: AccountEntity)
+
 }
