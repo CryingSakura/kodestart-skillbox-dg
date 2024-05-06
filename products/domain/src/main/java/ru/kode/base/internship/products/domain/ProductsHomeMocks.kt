@@ -1,10 +1,5 @@
 package ru.kode.base.internship.products.domain
 
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
-import java.util.Locale
-
 enum class PaymentSystem {
   Mastercard,
   Visa,

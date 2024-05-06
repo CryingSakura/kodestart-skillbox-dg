@@ -24,5 +24,4 @@ class AccountDataSourceImpl @Inject constructor(
       queries.insertAccountObj(account)
     }
   }
-
 }

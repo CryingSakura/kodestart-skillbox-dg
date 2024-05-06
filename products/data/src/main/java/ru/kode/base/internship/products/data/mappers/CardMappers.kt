@@ -9,7 +9,6 @@ import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
 import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 
-
 internal fun CardEntity.toCardDm(): CardDomainEntity {
   return CardDomainEntity(
     cardId = CardDomainEntity.Id(cardId = id.toString()),

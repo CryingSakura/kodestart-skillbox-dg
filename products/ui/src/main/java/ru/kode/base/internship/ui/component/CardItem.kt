@@ -57,7 +57,7 @@ fun CardItem(
       Text(
         text = when (cardStatus) {
           CardStatus.DEACTIVATED -> stringResource(id = R.string.blocked_card)
-          CardStatus.ACTIVE -> when(cardType){
+          CardStatus.ACTIVE -> when (cardType) {
             CardType.physical -> stringResource(id = R.string.physical_card)
             CardType.virtual -> stringResource(id = R.string.virtual_card)
           }
