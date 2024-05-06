@@ -7,13 +7,14 @@ import retrofit2.Retrofit
 import ru.kode.base.core.di.AppScope
 import ru.kode.base.core.di.SingleIn
 import ru.kode.base.internship.auth.domain.network.AuthApi
+import javax.inject.Named
 
 @Module
 @ContributesTo(AppScope::class)
 object AuthDataModule {
   @Provides
   @SingleIn(AppScope::class)
-  fun provideAuthApi(retrofit: Retrofit): AuthApi {
+  fun provideAuthApi(@Named("auth")retrofit: Retrofit): AuthApi {
     return retrofit.create(AuthApi::class.java)
   }
 }

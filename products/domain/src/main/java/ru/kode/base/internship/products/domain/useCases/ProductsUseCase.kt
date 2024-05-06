@@ -1,14 +1,27 @@
-package ru.kode.base.internship.products.domain.UseCases
+package ru.kode.base.internship.products.domain.useCases
 
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import ru.kode.base.core.di.AppScope
 import ru.kode.base.core.di.SingleIn
 import ru.kode.base.internship.core.domain.BaseUseCase
 import ru.kode.base.internship.core.domain.entity.LceState
-import ru.kode.base.internship.products.domain.entity.CardDataEntity
+import ru.kode.base.internship.products.domain.Currency
+import ru.kode.base.internship.products.domain.Money
+import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
+import ru.kode.base.internship.products.domain.entity.CardDomainEntity
+import ru.kode.base.internship.products.domain.entity.DepositDomainEntity
 import ru.kode.base.internship.products.domain.repository.AccountsRepository
 import ru.kode.base.internship.products.domain.repository.CardRepository
 import ru.kode.base.internship.products.domain.repository.DepositRepository
@@ -24,16 +37,26 @@ class ProductsUseCase @Inject constructor(
     val accountsState: LceState = LceState.None,
     val depositState: LceState = LceState.None,
     val cardState: LceState = LceState.None,
+    val cardDetailsId: CardDomainEntity.Id = CardDomainEntity.Id("0"),
   )
-  val deposits = depRepository.depositsFlow
-  val accounts = accRepository.accountsFlow
-  val cardDetails = cardRepository.card
-  val money = cardRepository.money
+
+  val deposits = depRepository.getAllDeposits()
+  private val cards = cardRepository.getAllCards()
+  val money = MutableStateFlow(
+    Money("0", Currency.RUB)
+  )
+  val accounts: Flow<List<AccountDomainEntity>> = accRepository.getAllAccounts()
   val accountsState: Flow<LceState>
     get() = stateFlow.map { it.accountsState }.distinctUntilChanged()
+
+
+  val cardDetails: Flow<CardDomainEntity> = stateFlow
+    .mapNotNull { it.cardDetailsId }
+    .flatMapLatest { cardRepository.getCardById(it) }
+    .filterNotNull()
+
   suspend fun fetchAccounts() {
     setState { copy(accountsState = LceState.Loading) }
-    delay(2000)
     try {
       accRepository.fetchAccounts()
       setState { copy(accountsState = LceState.Content) }
@@ -41,38 +64,12 @@ class ProductsUseCase @Inject constructor(
       setState { copy(accountsState = LceState.Error(e.message)) }
     }
   }
-  suspend fun refresh() {
-    setState {
-      copy(
-        accountsState = LceState.Loading,
-        depositState = LceState.Loading
-      )
-    }
-    delay(2000)
-    try {
-      accRepository.fetchAccounts()
-      depRepository.fetchDeposits()
-      setState {
-        copy(
-          accountsState = LceState.Content,
-          depositState = LceState.Content
-        )
-      }
-      setState { copy(depositState = LceState.Content) }
-    } catch (e: Exception) {
-      setState {
-        copy(
-          accountsState = LceState.Error(e.message),
-          depositState = LceState.Error(e.message)
-        )
-      }
-    }
-  }
+
   val depositsState: Flow<LceState>
     get() = stateFlow.map { it.depositState }.distinctUntilChanged()
+
   suspend fun fetchDeposits() {
     setState { copy(depositState = LceState.Loading) }
-    delay(2000)
     try {
       depRepository.fetchDeposits()
       setState { copy(depositState = LceState.Content) }
@@ -80,6 +77,7 @@ class ProductsUseCase @Inject constructor(
       setState { copy(depositState = LceState.Error(e.message)) }
     }
   }
+
   suspend fun loadAll() {
     setState {
       copy(
@@ -87,10 +85,9 @@ class ProductsUseCase @Inject constructor(
         depositState = LceState.Loading
       )
     }
-    delay(2000)
     try {
-      depRepository.fetchDeposits()
       accRepository.fetchAccounts()
+      depRepository.fetchDeposits()
       setState {
         copy(
           accountsState = LceState.Content,
@@ -107,19 +104,29 @@ class ProductsUseCase @Inject constructor(
     }
   }
 
-  /*  val cardState: Flow<LceState>
-      get() = stateFlow.map { it.cardState }.distinctUntilChanged()*/
-  suspend fun cardDetails(id: CardDataEntity.Id) {
+  suspend fun cardDetails(id: CardDomainEntity.Id) {
     setState { copy(cardState = LceState.Loading) }
     try {
-      cardRepository.cardDetails(id)
-      cardRepository.getMoney(cardRepository.card.value.accountId)
+      CoroutineScope(Dispatchers.Default).launch {
+        cards.collectLatest { cardList ->
+          val card = cardList.find { it.cardId == id }!!
+          accounts.collectLatest { accList ->
+            money.update {
+              Money(
+                accList.find { it.accountId == card.accountId }!!.balance,
+                accList.find { it.accountId == card.accountId }!!.currency
+              )
+            }
+          }
+        }
+      }
+      setState {
+        copy(cardDetailsId = id)
+      }
       setState { copy(cardState = LceState.Content) }
     } catch (e: Exception) {
       setState { copy(cardState = LceState.Error(e.message)) }
     }
   }
-  fun rename(newName: String, id: CardDataEntity.Id) {
-    cardRepository.rename(newName, id)
-  }
+
 }

@@ -16,6 +16,7 @@ import ru.kode.base.internship.core.data.network.interceptor.AttachAccessTokenIn
 import ru.kode.base.internship.core.data.storage.persistence.TokensPersistence
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 
 @Module
 @ContributesTo(AppScope::class)
@@ -49,16 +50,29 @@ object NetworkModule {
 
   @Provides
   @SingleIn(AppScope::class)
-  fun provideRetrofit(json: Json, httpClient: OkHttpClient): Retrofit {
+  @Named("auth")
+  fun provideAuthRetrofit(json: Json, httpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
       .addConverterFactory(json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
       .client(httpClient)
       .baseUrl("$BASE_URL/")
       .build()
   }
+
+  @Provides
+  @SingleIn(AppScope::class)
+  @Named("products")
+  fun provideProductsRetrofit(json: Json, httpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+      .addConverterFactory(json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
+      .client(httpClient)
+      .baseUrl("$PRODUCT_BASE_URL/")
+      .build()
+  }
 }
 
 private const val BASE_URL = "https://stoplight.io/mocks/kode-api/kode-bank/151956"
+private const val PRODUCT_BASE_URL = "https://stoplight.io/mocks/kode-api/kode-bank/6096726"
 private const val HTTP_CONNECT_TIMEOUT = 60_000L
 private val HTTP_LOG_LEVEL = if (BuildConfig.RELEASE) {
   HttpLoggingInterceptor.Level.BASIC

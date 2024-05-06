@@ -1,25 +1,30 @@
 package ru.kode.base.internship.products.domain
 
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
+import java.util.Locale
+
 enum class PaymentSystem {
   Mastercard,
   Visa,
 }
 
 enum class CardType {
-  Physical,
-  Virtual
+  physical,
+  virtual
 }
 enum class CardStatus {
-  Active,
-  Blocked,
+  ACTIVE,
+  DEACTIVATED,
 }
 enum class AccountStatus {
-  Active,
-  Blocked,
+  ACTIVE,
+  DEACTIVATED,
 }
 enum class DepositStatus {
-  Active,
-  Blocked,
+  ACTIVE,
+  DEACTIVATED,
 }
 
 enum class Currency {
@@ -31,12 +36,4 @@ enum class Currency {
 data class Money(
   val balance: String,
   val currency: Currency,
-) {
-  fun format(): String {
-    return "$balance " + when (currency) {
-      Currency.RUB -> "₽"
-      Currency.USD -> "$"
-      Currency.EUR -> "€"
-    }
-  }
-}
+)

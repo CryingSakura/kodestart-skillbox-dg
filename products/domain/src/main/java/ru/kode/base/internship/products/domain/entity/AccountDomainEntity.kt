@@ -5,13 +5,13 @@ import ru.kode.base.internship.products.domain.AccountStatus
 import ru.kode.base.internship.products.domain.Currency
 
 @Immutable
-data class AccountDataEntity(
-  val cards: List<CardDataEntity>,
+data class AccountDomainEntity(
+  val cards: List<CardDomainEntity>,
   val number: String,
   val status: AccountStatus,
   val balance: String,
   val currency: Currency,
-  val accountId: AccountDataEntity.Id,
+  val accountId: AccountDomainEntity.Id,
 ) {
   @JvmInline
   value class Id(val accountId: String)

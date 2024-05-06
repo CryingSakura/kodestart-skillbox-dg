@@ -8,7 +8,7 @@ class CardDetailsIntents : BaseViewIntents() {
   val showPayment = intent(name = "showPayment")
   val showHistory = intent(name = "showHistory")
   val changeText = intent<String>(name = "changeText")
-  val confirm = intent(name = "confirm")
-  val dismiss = intent(name = "dismiss")
+  val confirmRenaming = intent(name = "confirmRenaming")
+  val dismissRenaming = intent(name = "dismissRenaming")
   val alertDialog = intent(name = "alertDialog")
 }

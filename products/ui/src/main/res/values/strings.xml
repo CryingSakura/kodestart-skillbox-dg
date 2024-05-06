@@ -19,6 +19,11 @@
   <string name="rename">Переименовать</string>
   <string name="enter_new_name">Введите новое название</string>
   <string name="reload">Обновить</string>
+  <string name="rename_card">Переименовать карту</string>
+  <string name="account_details">Реквизиты счета</string>
+  <string name="block_card">Заблокировать карту</string>
+  <string name="card_information">Информация о карте</string>
+  <string name="issue_card">Выпустить карту</string>
   <string name="something_went_wrong">Упс, что-то пошло не так</string>
   <string name="failed_to_load">Не удалось загрузить \n часть контента </string>
   <string name="server_temporarily_unavailable">Сервер временно недоступен. \n Пожалуйста, повторите попытку \n позднее</string>

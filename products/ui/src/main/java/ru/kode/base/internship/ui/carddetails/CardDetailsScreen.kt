@@ -3,6 +3,7 @@ package ru.kode.base.internship.ui.carddetails
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -36,15 +38,14 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
   intents = rememberViewIntents()
 ) { state, intents ->
   OnBackPressedHandler(onBack = intents.navigateOnBack)
-  if (state.showDialog)
-    {
-      RenameDialog(
-        value = state.enterName,
-        onValueChanged = intents.changeText,
-        onConfirmRequest = intents.confirm,
-        onDismissRequest = intents.dismiss
-      )
-    }
+  if (state.showDialog) {
+    RenameDialog(
+      value = state.enterName,
+      onValueChanged = intents.changeText,
+      onConfirmRequest = intents.confirmRenaming,
+      onDismissRequest = intents.dismissRenaming
+    )
+  }
   Box(
     modifier = Modifier
       .statusBarsPadding()
@@ -72,7 +73,7 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
             money = state.money,
             cardType = state.cardDetails.cardType,
             lastFourDigits = state.cardDetails.number.takeLast(4),
-            closeDate = state.cardDetails.expiredAt.take(4),
+            closeDate = state.cardDetails.expiredAt,
             cardStatus = state.cardDetails.status
           )
         }
@@ -91,13 +92,22 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
       item { Spacer(modifier = Modifier.height(16.dp)) }
       when (state.listState) {
         ListState.Actions -> items(itemsColumnList) { itemData ->
-          itemData.onEach {
-            CardDetailsListItem(
-              modifier = Modifier.fillMaxWidth(),
-              icon = it.key,
-              text = it.value,
-              onClick = intents.alertDialog
-            )
+          Column(Modifier.background(color = AppTheme.colors.backgroundSecondary)) {
+            itemData.onEach {
+              CardDetailsListItem(
+                modifier = Modifier.fillMaxWidth(),
+                icon = it.key,
+                text = it.value,
+                onClick = intents.alertDialog
+              )
+              if (itemData != itemsColumnList.last()) {
+                Divider(
+                  modifier = Modifier.padding(start = 56.dp, end = 16.dp),
+                  color = AppTheme.colors.contendSecondary,
+                  thickness = 2.dp
+                )
+              }
+            }
           }
         }
         ListState.Payments -> {}
@@ -108,9 +118,9 @@ fun CardDetailsScreen(viewModel: CardDetailsViewModel = daggerViewModel()) = App
 }
 
 val itemsColumnList = listOf(
-  mapOf(R.drawable.ic_rename_card_24x24 to "Переименовать карту"),
-  mapOf(R.drawable.ic_account_details_24x24 to "Реквизиты счета"),
-  mapOf(R.drawable.ic_block_card_24x24 to "Заблокировать карту"),
-  mapOf(R.drawable.ic_card_info_24x24 to "Информация о карте"),
-  mapOf(R.drawable.ic_issue_card_24x24 to "Выпустить карту")
+  mapOf(R.drawable.ic_rename_card_24x24 to R.string.rename_card),
+  mapOf(R.drawable.ic_account_details_24x24 to R.string.account_details),
+  mapOf(R.drawable.ic_block_card_24x24 to R.string.block_card),
+  mapOf(R.drawable.ic_card_info_24x24 to R.string.card_information),
+  mapOf(R.drawable.ic_issue_card_24x24 to R.string.issue_card)
 )

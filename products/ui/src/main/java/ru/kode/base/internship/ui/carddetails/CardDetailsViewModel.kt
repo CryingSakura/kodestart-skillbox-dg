@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import ru.dimsuz.unicorn2.Machine
 import ru.dimsuz.unicorn2.machine
 import ru.kode.base.core.BaseViewModel
-import ru.kode.base.internship.products.domain.UseCases.ProductsUseCase
+import ru.kode.base.internship.products.domain.useCases.ProductsUseCase
 import ru.kode.base.internship.routing.FlowEvent
 import ru.kode.base.internship.ui.carddetails.states.ListState
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class CardDetailsViewModel @Inject constructor(
 
     onEach(prodUseCase.cardDetails) {
       transitionTo { state, details ->
-        state.copy(cardDetails = details)
+        state.copy(cardDetails = details!!)
       }
     }
     onEach(intent(CardDetailsIntents::showActions)) {
@@ -51,25 +51,14 @@ class CardDetailsViewModel @Inject constructor(
         state.copy(showDialog = true)
       }
     }
-    onEach(intent(CardDetailsIntents::confirm)) {
-      action { _, newState, _ ->
-        prodUseCase.rename(newState.enterName, newState.cardDetails.cardId)
-      }
-      transitionTo { state, _ ->
-        state.copy(enterName = "")
-      }
-      transitionTo { state, _ ->
-        state.copy(showDialog = false)
-      }
-    }
 
     onEach(prodUseCase.money) {
-      transitionTo { state, balance ->
-        state.copy(money = balance)
+      transitionTo { state, money ->
+        state.copy(money = money)
       }
     }
 
-    onEach(intent(CardDetailsIntents::dismiss)) {
+    onEach(intent(CardDetailsIntents::dismissRenaming)) {
       transitionTo { state, _ ->
         state.copy(showDialog = false)
       }

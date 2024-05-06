@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import ru.dimsuz.unicorn2.Machine
 import ru.dimsuz.unicorn2.machine
 import ru.kode.base.core.BaseViewModel
-import ru.kode.base.internship.products.domain.UseCases.ProductsUseCase
+import ru.kode.base.internship.products.domain.useCases.ProductsUseCase
 import ru.kode.base.internship.routing.FlowEvent
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class ProductsHomeViewModel @Inject constructor(
     onEach(intent(ProductsHomeIntents::refreshData)) {
       action { _, _, _ ->
         executeAsync {
-          prodUseCase.refresh()
+          prodUseCase.loadAll()
         }
       }
     }

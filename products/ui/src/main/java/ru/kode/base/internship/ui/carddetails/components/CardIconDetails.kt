@@ -26,8 +26,9 @@ import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
-import java.text.SimpleDateFormat
-import java.util.Locale
+import ru.kode.base.internship.ui.format
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CardIcon(
@@ -75,8 +76,8 @@ fun CardIcon(
           )
           Text(
             text = when (cardType) {
-              CardType.Physical -> "физическая"
-              CardType.Virtual -> "виртуальная"
+              CardType.physical -> "физическая"
+              CardType.virtual -> "виртуальная"
             },
             color = Color.White,
             style = AppTheme.typography.caption2
@@ -88,21 +89,21 @@ fun CardIcon(
       Text(
         modifier = Modifier.padding(top = 24.dp),
         text = when (cardStatus) {
-          CardStatus.Active -> money.format()
-          CardStatus.Blocked -> {
+          CardStatus.ACTIVE -> format(money)
+          CardStatus.DEACTIVATED -> {
             stringResource(id = R.string.blocked_card)
           }
         },
         color = when (cardStatus) {
-          CardStatus.Blocked -> AppTheme.colors.indicatorContendError
-          CardStatus.Active -> AppTheme.colors.textButton
+          CardStatus.DEACTIVATED -> AppTheme.colors.indicatorContendError
+          CardStatus.ACTIVE -> AppTheme.colors.textButton
         }
       )
       Row(modifier = Modifier.padding(top = 28.dp)) {
         Text(text = "**** $lastFourDigits", color = Color.White)
         Spacer(modifier = Modifier.weight(1f))
         Text(
-          text = closeDate,
+          text = parseToMMYY(closeDate),
           color = Color.White,
         )
       }
@@ -110,8 +111,8 @@ fun CardIcon(
   }
 }
 
-fun parseDate(inputDate: String): String {
-  SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse("2023-01-10")
-  val outputDate = SimpleDateFormat("dd/MM", Locale.getDefault()).format(inputDate)
-  return outputDate
+fun parseToMMYY(dateString: String): String {
+  val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+  val parsedDateTime = LocalDateTime.parse(dateString, formatter)
+  return parsedDateTime.format(DateTimeFormatter.ofPattern("MM/yy"))
 }

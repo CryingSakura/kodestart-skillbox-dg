@@ -5,8 +5,8 @@ import ru.kode.base.internship.products.domain.Currency
 import ru.kode.base.internship.products.domain.DepositStatus
 
 @Immutable
-data class DepositDataEntity(
-  val depositId: DepositDataEntity.Id,
+data class DepositDomainEntity(
+  val depositId: DepositDomainEntity.Id,
   val balance: String,
   val status: DepositStatus,
   val rate: String,

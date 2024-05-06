@@ -1,9 +1,10 @@
 package ru.kode.base.internship.products.domain.repository
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import ru.kode.base.internship.products.domain.entity.AccountDataEntity
+import kotlinx.coroutines.flow.Flow
+import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
 
 interface AccountsRepository {
-  val accountsFlow: MutableStateFlow<List<AccountDataEntity>>
-  fun fetchAccounts()
+  suspend fun fetchAccounts()
+
+  fun getAllAccounts(): Flow<List<AccountDomainEntity>>
 }

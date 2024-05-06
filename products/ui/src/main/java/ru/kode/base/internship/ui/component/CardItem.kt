@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.kode.base.internship.products.domain.CardStatus
 import ru.kode.base.internship.products.domain.CardType
@@ -55,12 +56,15 @@ fun CardItem(
       Text(text = cardName, style = AppTheme.typography.body2)
       Text(
         text = when (cardStatus) {
-          CardStatus.Blocked -> cardStatus.toString()
-          CardStatus.Active -> cardType.toString()
+          CardStatus.DEACTIVATED -> stringResource(id = R.string.blocked_card)
+          CardStatus.ACTIVE -> when(cardType){
+            CardType.physical -> stringResource(id = R.string.physical_card)
+            CardType.virtual -> stringResource(id = R.string.virtual_card)
+          }
         },
         color = when (cardStatus) {
-          CardStatus.Blocked -> AppTheme.colors.indicatorContendError
-          CardStatus.Active -> AppTheme.colors.textSecondary
+          CardStatus.DEACTIVATED -> AppTheme.colors.indicatorContendError
+          CardStatus.ACTIVE -> AppTheme.colors.textSecondary
         },
         style = AppTheme.typography.caption1
       )

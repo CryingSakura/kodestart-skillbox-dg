@@ -25,17 +25,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.kode.base.internship.products.domain.Currency
 import ru.kode.base.internship.products.domain.Money
-import ru.kode.base.internship.products.domain.entity.CardDataEntity
+import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
+import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
+import ru.kode.base.internship.ui.format
 import ru.kode.base.internship.ui.home.ProductsHomeIntents
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun AccountItem(
   modifier: Modifier = Modifier,
   onAccountItemClick: () -> Unit,
   onCardClick: ProductsHomeIntents,
-  cards: List<CardDataEntity>,
+  cards: List<CardDomainEntity>,
   unLastAccountInList: Boolean,
   money: Money,
 ) {
@@ -66,7 +70,7 @@ fun AccountItem(
     ) {
       Text(text = stringResource(id = R.string.account), style = AppTheme.typography.body2)
       Text(
-        text = money.format(),
+        text = format(money),
         style = AppTheme.typography.body2,
         color = AppTheme.colors.contendAccentPrimary
       )

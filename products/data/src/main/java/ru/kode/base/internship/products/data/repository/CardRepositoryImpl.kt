@@ -1,32 +1,31 @@
 package ru.kode.base.internship.products.data.repository
 
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import ru.kode.base.core.di.AppScope
-import ru.kode.base.internship.products.data.MockGetData
-import ru.kode.base.internship.products.domain.Money
-import ru.kode.base.internship.products.domain.entity.AccountDataEntity
-import ru.kode.base.internship.products.domain.entity.CardDataEntity
+import ru.kode.base.internship.products.data.CardEntity
+import ru.kode.base.internship.products.data.mappers.mapFromDBToDomainAccount
+import ru.kode.base.internship.products.data.mappers.mapToDomainCard
+import ru.kode.base.internship.products.data.mappers.toAccountEntity
+import ru.kode.base.internship.products.data.mappers.toCardDm
+import ru.kode.base.internship.products.data.mappers.toCardEntity
+import ru.kode.base.internship.products.data.network.ProdApi
+import ru.kode.base.internship.products.data.source.card.CardDataSource
+import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 import ru.kode.base.internship.products.domain.repository.CardRepository
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
-class CardRepositoryImpl @Inject constructor() : CardRepository {
-  override val money = MutableStateFlow(
-    Money(MockGetData.getAccounts()[1].balance, MockGetData.getAccounts()[1].currency)
-  )
-  override val card = MutableStateFlow(
-    MockGetData.getCard()[1]
-  )
-  override fun cardDetails(id: CardDataEntity.Id) {
-    card.update { MockGetData.getCard().find { it.cardId == id }!! }
+class CardRepositoryImpl @Inject constructor(
+  private val cardsDataSource: CardDataSource,
+  private val api: ProdApi,
+) : CardRepository {
+  override suspend fun getCardById(id: CardDomainEntity.Id): Flow<CardDomainEntity?> {
+    return cardsDataSource.getCardById(id.cardId.toInt()).map { it?.toCardDm() }
   }
-  override fun rename(newName: String, id: CardDataEntity.Id) {
-    MockGetData.renameCard(id, newName)
-  }
-  override fun getMoney(id: AccountDataEntity.Id) {
-    val account = MockGetData.getAccounts().find { it.accountId == id }
-    money.update { Money(account!!.balance, account.currency) }
+  override fun getAllCards(): Flow<List<CardDomainEntity>> {
+    return cardsDataSource.getAllCards().map { cardsEntity -> cardsEntity.map { it.toCardDm() } }
   }
 }
