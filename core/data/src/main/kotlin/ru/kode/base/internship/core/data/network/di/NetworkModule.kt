@@ -50,7 +50,8 @@ object NetworkModule {
 
   @Provides
   @SingleIn(AppScope::class)
-  fun provideRetrofit(json: Json, httpClient: OkHttpClient): Retrofit {
+  @Named("auth")
+  fun provideAuthRetrofit(json: Json, httpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
       .addConverterFactory(json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
       .client(httpClient)

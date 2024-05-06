@@ -10,7 +10,7 @@ data class CardDomainEntity(
   val cardId: CardDomainEntity.Id,
   val accountId: AccountDomainEntity.Id,
   val number: String,
-  val expiredAt: String,
+  val expiredAt: String?,
   val status: CardStatus,
   val name: String,
   val cardType: CardType,

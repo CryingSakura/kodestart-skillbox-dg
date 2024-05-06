@@ -21,6 +21,7 @@ import ru.kode.base.internship.products.domain.Currency
 import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
+import ru.kode.base.internship.ui.format
 
 @Composable
 fun DepositItem(
@@ -57,7 +58,7 @@ fun DepositItem(
     ) {
       Text(text = depositName, style = AppTheme.typography.body2)
       Text(
-        text = money.format(),
+        text = format(money),
         style = AppTheme.typography.body2,
         color = AppTheme.colors.contendAccentPrimary
       )

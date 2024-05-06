@@ -1,4 +1,4 @@
-package ru.kode.base.internship.products.domain.UseCases
+package ru.kode.base.internship.products.domain.useCases
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.kode.base.core.di.AppScope
@@ -34,67 +37,31 @@ class ProductsUseCase @Inject constructor(
     val accountsState: LceState = LceState.None,
     val depositState: LceState = LceState.None,
     val cardState: LceState = LceState.None,
+    val cardDetailsId: CardDomainEntity.Id = CardDomainEntity.Id("0"),
   )
 
-  private val _deposits = MutableStateFlow<List<DepositDomainEntity>>(emptyList())
-  val deposits = _deposits.asStateFlow()
-  private val _accounts = MutableStateFlow<List<AccountDomainEntity>>(emptyList())
-  val accounts = _accounts.asStateFlow()
-  private val _cards = MutableStateFlow<List<CardDomainEntity>>(emptyList())
-  val cards = _cards.asStateFlow()
+  val deposits = depRepository.getAllDeposits()
+  private val cards = cardRepository.getAllCards()
   val money = MutableStateFlow(
-    Money("", Currency.RUB)
+    Money("0", Currency.RUB)
   )
+  val accounts: Flow<List<AccountDomainEntity>> = accRepository.getAllAccounts()
   val accountsState: Flow<LceState>
     get() = stateFlow.map { it.accountsState }.distinctUntilChanged()
 
-  private val _cardDetails = MutableStateFlow<CardDomainEntity?>(null)
-  val cardDetails = _cardDetails.asStateFlow()
+
+  val cardDetails: Flow<CardDomainEntity> = stateFlow
+    .mapNotNull { it.cardDetailsId }
+    .flatMapLatest { cardRepository.getCardById(it) }
+    .filterNotNull()
+
   suspend fun fetchAccounts() {
     setState { copy(accountsState = LceState.Loading) }
     try {
-      setState { copy(accountsState = LceState.Content) }
       accRepository.fetchAccounts()
-      accRepository.getAllAccounts().collectLatest { accounts ->
-        _accounts.update { accounts }
-      }
+      setState { copy(accountsState = LceState.Content) }
     } catch (e: Exception) {
       setState { copy(accountsState = LceState.Error(e.message)) }
-    }
-  }
-
-  suspend fun refresh() {
-    setState {
-      copy(
-        accountsState = LceState.Loading,
-        depositState = LceState.Loading
-      )
-    }
-    try {
-      accRepository.fetchAccounts()
-      depRepository.fetchDeposits()
-      cardRepository.getAllCards().collectLatest { cards ->
-        _cards.update { cards }
-      }
-      depRepository.getAllDeposits().collectLatest { deposits ->
-        _deposits.update { deposits }
-      }
-      accRepository.getAllAccounts().collectLatest { accounts ->
-        _accounts.update { accounts }
-      }
-      setState {
-        copy(
-          accountsState = LceState.Content,
-          depositState = LceState.Content
-        )
-      }
-    } catch (e: Exception) {
-      setState {
-        copy(
-          accountsState = LceState.Error(e.message),
-          depositState = LceState.Error(e.message)
-        )
-      }
     }
   }
 
@@ -104,11 +71,8 @@ class ProductsUseCase @Inject constructor(
   suspend fun fetchDeposits() {
     setState { copy(depositState = LceState.Loading) }
     try {
-      setState { copy(depositState = LceState.Content) }
       depRepository.fetchDeposits()
-      depRepository.getAllDeposits().collectLatest { deposits ->
-        _deposits.update { deposits }
-      }
+      setState { copy(depositState = LceState.Content) }
     } catch (e: Exception) {
       setState { copy(depositState = LceState.Error(e.message)) }
     }
@@ -124,27 +88,6 @@ class ProductsUseCase @Inject constructor(
     try {
       accRepository.fetchAccounts()
       depRepository.fetchDeposits()
-      CoroutineScope(Dispatchers.Default).launch {
-        cardRepository.getAllCards().collectLatest { cards ->
-          _cards.update { cards }
-        }
-      }
-      CoroutineScope(Dispatchers.Default).launch {
-        accRepository.getAllAccounts().collectLatest { accounts ->
-          _accounts.update { accounts }
-        }
-      }
-      CoroutineScope(Dispatchers.Default).launch {
-        depRepository.getAllDeposits().collectLatest { deposits ->
-          _deposits.update { deposits }
-        }
-      }
-      CoroutineScope(Dispatchers.Default).launch {
-        val cards = _cards.value
-        _accounts.update { accounts ->
-          accounts.map { it.copy(cards = cards) }
-        }
-      }
       setState {
         copy(
           accountsState = LceState.Content,
@@ -164,13 +107,21 @@ class ProductsUseCase @Inject constructor(
   suspend fun cardDetails(id: CardDomainEntity.Id) {
     setState { copy(cardState = LceState.Loading) }
     try {
-      _cardDetails.update { cardRepository.getCardById(id) }
-      val card = cards.value.find { it.cardId == id }!!
-      money.update {
-        Money(
-          accounts.value.find { it.accountId == card.accountId }!!.balance,
-          accounts.value.find { it.accountId == card.accountId }!!.currency
-        )
+      CoroutineScope(Dispatchers.Default).launch {
+        cards.collectLatest { cardList ->
+          val card = cardList.find { it.cardId == id }!!
+          accounts.collectLatest { accList ->
+            money.update {
+              Money(
+                accList.find { it.accountId == card.accountId }!!.balance,
+                accList.find { it.accountId == card.accountId }!!.currency
+              )
+            }
+          }
+        }
+      }
+      setState {
+        copy(cardDetailsId = id)
       }
       setState { copy(cardState = LceState.Content) }
     } catch (e: Exception) {
@@ -178,7 +129,4 @@ class ProductsUseCase @Inject constructor(
     }
   }
 
-  fun rename(newName: String, id: CardDomainEntity.Id) {
-    cardRepository.rename(newName, id)
-  }
 }

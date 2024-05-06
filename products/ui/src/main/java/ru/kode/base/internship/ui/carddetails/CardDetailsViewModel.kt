@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import ru.dimsuz.unicorn2.Machine
 import ru.dimsuz.unicorn2.machine
 import ru.kode.base.core.BaseViewModel
-import ru.kode.base.internship.products.domain.UseCases.ProductsUseCase
+import ru.kode.base.internship.products.domain.useCases.ProductsUseCase
 import ru.kode.base.internship.routing.FlowEvent
 import ru.kode.base.internship.ui.carddetails.states.ListState
 import javax.inject.Inject
@@ -49,17 +49,6 @@ class CardDetailsViewModel @Inject constructor(
     onEach(intent(CardDetailsIntents::alertDialog)) {
       transitionTo { state, _ ->
         state.copy(showDialog = true)
-      }
-    }
-    onEach(intent(CardDetailsIntents::confirmRenaming)) {
-      action { _, newState, _ ->
-        newState.cardDetails.let { prodUseCase.rename(newState.enterName, it.cardId) }
-      }
-      transitionTo { state, _ ->
-        state.copy(enterName = "")
-      }
-      transitionTo { state, _ ->
-        state.copy(showDialog = false)
       }
     }
 

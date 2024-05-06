@@ -1,4 +1,4 @@
-package ru.kode.base.internship.products.data.DI
+package ru.kode.base.internship.products.data.di
 
 import android.content.Context
 import app.cash.sqldelight.db.SqlDriver

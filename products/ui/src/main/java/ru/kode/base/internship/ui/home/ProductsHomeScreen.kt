@@ -97,7 +97,6 @@ fun ProductsHomeScreen(viewModel: ProductsHomeViewModel = daggerViewModel()) = A
           Column(Modifier.background(color = AppTheme.colors.backgroundSecondary)) {
             AccountItem(
               modifier = Modifier.background(AppTheme.colors.backgroundSecondary),
-              accountId = account.accountId,
               onAccountItemClick = intents.accountDetailsRequested,
               cards = account.cards,
               onCardClick = intents,

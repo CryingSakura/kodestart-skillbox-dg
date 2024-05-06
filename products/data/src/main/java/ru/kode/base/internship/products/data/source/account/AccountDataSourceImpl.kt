@@ -1,4 +1,4 @@
-package ru.kode.base.internship.products.data.source.Account
+package ru.kode.base.internship.products.data.source.account
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -16,25 +16,13 @@ class AccountDataSourceImpl @Inject constructor(
   db: ProdDB,
 ) : AccountDataSource {
   private val queries = db.accountEntityQueries
-  override suspend fun getAccountById(accountId: Int): AccountEntity? {
-    TODO("Not yet implemented")
-  }
-
   override fun getAllAccounts(): Flow<List<AccountEntity>> {
-    return queries.getAllAccounts().asFlow().mapToList(Dispatchers.Default)
+    return queries.getAllAccounts().asFlow().mapToList(Dispatchers.IO)
   }
-
-  override suspend fun insertAccount(id: Int, balance: String, currency: String, number: String, status: String) {
-    TODO("Not yet implemented")
-  }
-
   override suspend fun insertAccountObj(account: AccountEntity) {
     withContext(Dispatchers.IO) {
       queries.insertAccountObj(account)
     }
   }
 
-  override suspend fun deleteAccount(id: Int) {
-    TODO("Not yet implemented")
-  }
 }

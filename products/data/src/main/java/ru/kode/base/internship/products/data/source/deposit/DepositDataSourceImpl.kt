@@ -1,4 +1,4 @@
-package ru.kode.base.internship.products.data.source.Deposit
+package ru.kode.base.internship.products.data.source.deposit
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -16,12 +16,8 @@ class DepositDataSourceImpl @Inject constructor(
   db: ProdDB,
 ) : DepositDataSource {
   private val queries = db.depositEntityQueries
-  override suspend fun getDepositById(id: Long): DepositEntity? {
-    TODO("Not yet implemented")
-  }
-
   override fun getAllDeposits(): Flow<List<DepositEntity>> {
-    return queries.getAllDeposits().asFlow().mapToList(Dispatchers.Default)
+    return queries.getAllDeposits().asFlow().mapToList(Dispatchers.IO)
   }
 
   override suspend fun insertDepositObj(deposit: DepositEntity) {
@@ -42,9 +38,5 @@ class DepositDataSourceImpl @Inject constructor(
     withContext(Dispatchers.IO) {
       queries.insertDeposit(id, name, status, currency, balance, closeDate, rate)
     }
-  }
-
-  override suspend fun deleteDeposit(id: Int) {
-    TODO("Not yet implemented")
   }
 }

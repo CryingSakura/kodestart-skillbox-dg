@@ -9,7 +9,7 @@ import ru.kode.base.internship.products.data.mappers.toDepositEntity
 import ru.kode.base.internship.products.data.network.ProdApi
 import ru.kode.base.internship.products.data.network.entity.deposit.Deposit
 import ru.kode.base.internship.products.data.network.entity.deposit.DepositResponseById
-import ru.kode.base.internship.products.data.source.Deposit.DepositDataSource
+import ru.kode.base.internship.products.data.source.deposit.DepositDataSource
 import ru.kode.base.internship.products.domain.Currency
 import ru.kode.base.internship.products.domain.DepositStatus
 import ru.kode.base.internship.products.domain.entity.DepositDomainEntity
@@ -34,13 +34,11 @@ class DepositRepositoryImpl @Inject constructor(
       depositDataSource.insertDepositObj(deposit)
     }
   }
-
   override fun getAllDeposits(): Flow<List<DepositDomainEntity>> {
     return depositDataSource.getAllDeposits().map { depositsSM -> depositsSM.map { it.toDepositDm() } }
   }
 }
-
-fun mapToDomainDeposit(
+private fun mapToDomainDeposit(
   depResponse: Deposit,
   depById: DepositResponseById,
 ): DepositDomainEntity {

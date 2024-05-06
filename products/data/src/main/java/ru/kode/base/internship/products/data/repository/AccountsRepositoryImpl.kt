@@ -12,8 +12,8 @@ import ru.kode.base.internship.products.data.mappers.toAccountEntity
 import ru.kode.base.internship.products.data.mappers.toCardDm
 import ru.kode.base.internship.products.data.mappers.toCardEntity
 import ru.kode.base.internship.products.data.network.ProdApi
-import ru.kode.base.internship.products.data.source.Account.AccountDataSource
-import ru.kode.base.internship.products.data.source.Card.CardDataSource
+import ru.kode.base.internship.products.data.source.account.AccountDataSource
+import ru.kode.base.internship.products.data.source.card.CardDataSource
 import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
 import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 import ru.kode.base.internship.products.domain.repository.AccountsRepository

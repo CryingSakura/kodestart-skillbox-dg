@@ -26,6 +26,7 @@ import ru.kode.base.internship.products.domain.Money
 import ru.kode.base.internship.products.domain.PaymentSystem
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
+import ru.kode.base.internship.ui.format
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -88,7 +89,7 @@ fun CardIcon(
       Text(
         modifier = Modifier.padding(top = 24.dp),
         text = when (cardStatus) {
-          CardStatus.ACTIVE -> money.format()
+          CardStatus.ACTIVE -> format(money)
           CardStatus.DEACTIVATED -> {
             stringResource(id = R.string.blocked_card)
           }

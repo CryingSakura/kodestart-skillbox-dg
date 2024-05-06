@@ -29,6 +29,7 @@ import ru.kode.base.internship.products.domain.entity.AccountDomainEntity
 import ru.kode.base.internship.products.domain.entity.CardDomainEntity
 import ru.kode.base.internship.products.ui.R
 import ru.kode.base.internship.ui.core.uikit.theme.AppTheme
+import ru.kode.base.internship.ui.format
 import ru.kode.base.internship.ui.home.ProductsHomeIntents
 import java.text.NumberFormat
 import java.util.Locale
@@ -41,7 +42,6 @@ fun AccountItem(
   cards: List<CardDomainEntity>,
   unLastAccountInList: Boolean,
   money: Money,
-  accountId: AccountDomainEntity.Id,
 ) {
   var cardsExpanded by remember { mutableStateOf(true) }
 
@@ -70,7 +70,7 @@ fun AccountItem(
     ) {
       Text(text = stringResource(id = R.string.account), style = AppTheme.typography.body2)
       Text(
-        text = money.format(),
+        text = format(money),
         style = AppTheme.typography.body2,
         color = AppTheme.colors.contendAccentPrimary
       )

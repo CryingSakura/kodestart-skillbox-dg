@@ -1,10 +1,9 @@
-package ru.kode.base.internship.products.data.source.Deposit
+package ru.kode.base.internship.products.data.source.deposit
 
 import kotlinx.coroutines.flow.Flow
 import ru.kode.base.internship.products.data.DepositEntity
 
 interface DepositDataSource {
-  suspend fun getDepositById(id: Long): DepositEntity?
   fun getAllDeposits(): Flow<List<DepositEntity>>
 
   suspend fun insertDepositObj(deposit: DepositEntity)
@@ -18,6 +17,4 @@ interface DepositDataSource {
     closeDate: String,
     rate: String,
   )
-
-  suspend fun deleteDeposit(id: Int)
 }
